@@ -1,5 +1,6 @@
 package ua.com.nure.fitnessassistant.controller;
 
+import liquibase.pro.packaged.O;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,56 +8,43 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.com.nure.fitnessassistant.dto.AuthenticationRequestDto;
+import ua.com.nure.fitnessassistant.dto.UserDto;
+import ua.com.nure.fitnessassistant.dto.UserRegisterDTO;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.security.jwt.JwtTokenProvider;
-import ua.com.nure.fitnessassistant.service.UserService;
+import ua.com.nure.fitnessassistant.security.service.UserServiceSCRT;
+import ua.com.nure.fitnessassistant.service.user.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
 public class AuthenticationControllerV1 {
 
-    private final AuthenticationManager authenticationManager;
 
-    private final JwtTokenProvider jwtTokenProvider;
 
-    private final UserService userService;
+    private final UserServiceSCRT userService;
 
     @Autowired
-    public AuthenticationControllerV1(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+    public AuthenticationControllerV1(UserServiceSCRT userService) {
         this.userService = userService;
     }
 
     @PostMapping("login")
     public ResponseEntity login (@RequestBody AuthenticationRequestDto requestDto){
+        Map<Object, Object> response = userService.signIn(requestDto);
+       return ResponseEntity.ok(response);
+    }
 
-        try {
-            String username = requestDto.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,requestDto.getPassword()));
-            User user = userService.findByUserName(username);
 
-            if(user == null){
-                throw new UsernameNotFoundException("User with username: " + username + "wasn't found");
-            }
-
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
-
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", token);
-            return ResponseEntity.ok(response);
-        }catch (AuthenticationException exception){
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
+    @PostMapping("signUp")
+    public ResponseEntity signUp (@RequestBody UserRegisterDTO user){
+        Map<Object, Object> response = userService.signup(user.toUser());
+        return ResponseEntity.ok(response);
     }
 }

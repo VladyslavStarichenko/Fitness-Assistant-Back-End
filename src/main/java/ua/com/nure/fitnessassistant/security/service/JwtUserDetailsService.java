@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.security;
+package ua.com.nure.fitnessassistant.security.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUser;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUserFactory;
-import ua.com.nure.fitnessassistant.service.UserService;
+import ua.com.nure.fitnessassistant.service.user.UserService;
 
 @Service
 @Slf4j
