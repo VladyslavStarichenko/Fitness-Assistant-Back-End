@@ -3,6 +3,7 @@ package ua.com.nure.fitnessassistant.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.nure.fitnessassistant.dto.UserDto;
 import ua.com.nure.fitnessassistant.model.user.User;
@@ -18,6 +19,7 @@ public class AdminControllerV1 {
 
     @Autowired
     private UserService userService;
+
 
     @GetMapping("users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") UUID id){
