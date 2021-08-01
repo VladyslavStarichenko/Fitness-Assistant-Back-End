@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.service.impl;
+package ua.com.nure.fitnessassistant.service.user.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,8 @@ import ua.com.nure.fitnessassistant.model.user.Status;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.RoleRepository;
 import ua.com.nure.fitnessassistant.repository.UserRepository;
-import ua.com.nure.fitnessassistant.service.UserService;
+import ua.com.nure.fitnessassistant.service.user.UserService;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +35,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public User register(User user) {
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
-        user.setStatus(Status.ACTIVE);
-        User registeredUser = userRepository.save(user);
-        log.info("IN register - user: {} successfully registered", registeredUser);;
-        return registeredUser;
-    }
+
 
     @Override
     public List<User> getAll() {
@@ -101,4 +91,30 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public User updateUser(User user) {
+        Optional<User> userDb = this.userRepository.findById(user.getId());
+        if (userDb.isPresent()) {
+            User userToUpdate = userDb.get();
+            userToUpdate.setId(user.getId());
+            userToUpdate.setUserName(user.getUserName());
+            userToUpdate.setGoal(user.getGoal());
+            userToUpdate.setAge(user.getAge());
+            userToUpdate.setMail(user.getMail());
+            userToUpdate.setStatus(user.getStatus());
+            userToUpdate.setRoles(user.getRoles());
+            userToUpdate.setPassword(user.getPassword());
+            userToUpdate.setLastName(user.getLastName());
+            userToUpdate.setFirstName(user.getFirstName());
+            userToUpdate.setCreatedAt(user.getCreatedAt());
+            userRepository.save(userToUpdate);
+            return userToUpdate;
+        } else {
+            throw new CustomException("There is no user with id:" + user.getId() + " to update",
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
