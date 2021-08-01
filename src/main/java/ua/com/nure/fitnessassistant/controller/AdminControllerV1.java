@@ -1,13 +1,15 @@
 package ua.com.nure.fitnessassistant.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.nure.fitnessassistant.dto.UserDto;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.service.user.UserService;
+import ua.com.nure.fitnessassistant.service.user.impl.UserServiceImpl;
 
 import java.util.UUID;
 
@@ -17,8 +19,15 @@ import java.util.UUID;
 @RequestMapping("/api/v1/admin/")
 public class AdminControllerV1 {
 
+
+    private final UserService userService;
+    private final  UserServiceImpl userServiceImpl;
+
     @Autowired
-    private UserService userService;
+    public AdminControllerV1(UserService userService, UserServiceImpl userServiceImpl) {
+        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
+    }
 
 
     @GetMapping("users/{id}")
@@ -31,5 +40,9 @@ public class AdminControllerV1 {
         UserDto result = UserDto.fromUser(user);
         return  new ResponseEntity<>(result,HttpStatus.OK);
 
+    }
+    @GetMapping("users")
+    public Page<User> getUsers(Pageable pageable){
+        return userServiceImpl.getUsers(pageable);
     }
 }

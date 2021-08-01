@@ -1,12 +1,14 @@
 package ua.com.nure.fitnessassistant.model.user;
+
 import lombok.Data;
 import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -51,6 +53,7 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "goal")
     private Goal goal;
+
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)

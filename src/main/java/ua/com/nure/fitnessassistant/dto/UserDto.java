@@ -3,6 +3,7 @@ package ua.com.nure.fitnessassistant.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.ToString;
 import ua.com.nure.fitnessassistant.model.user.Goal;
 import ua.com.nure.fitnessassistant.model.user.User;
 
