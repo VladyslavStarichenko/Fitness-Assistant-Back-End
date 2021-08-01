@@ -3,20 +3,19 @@ package ua.com.nure.fitnessassistant.service.user.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
-import ua.com.nure.fitnessassistant.model.user.Role;
-import ua.com.nure.fitnessassistant.model.user.Status;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.RoleRepository;
 import ua.com.nure.fitnessassistant.repository.UserRepository;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,22 +35,26 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
+    //    @Override
+//    public Page<User> findAllUsers(Pageable pageable) {
+//        Page<User> result = userRepository.findAll(pageable);
+//        log.info("IN getAll - {} users found", result.getTotalPages());
+//        return result;
+//    }
     @Override
-    public List<User> getAll() {
-        List<User> result = userRepository.findAll();
-        log.info("IN getAll - {} users found", result.size());
-        return result;
+    public Page<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
+
 
     @Override
     public User findByUserName(String userName) {
         Optional<User> userDb = Optional.ofNullable(this.userRepository.findUserByUserName(userName));
-        if(userDb.isPresent()){
+        if (userDb.isPresent()) {
             User result = userDb.get();
             log.info("IN findByUsername - user: {} found by username: {}", result, userName);
             return result;
-        }else{
+        } else {
             throw new CustomException("There is no User found with requested name: " + userName,
                     HttpStatus.NOT_FOUND);
         }
@@ -84,8 +87,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> userDb = this.userRepository.findById(id);
         if (userDb.isPresent()) {
             this.userRepository.delete(userDb.get());
-            log.info("IN delete - user with id: {} successfully deleted",id);
-        }else{
+            log.info("IN delete - user with id: {} successfully deleted", id);
+        } else {
             throw new CustomException("There is no Category found with request id: " + id,
                     HttpStatus.NOT_FOUND);
         }

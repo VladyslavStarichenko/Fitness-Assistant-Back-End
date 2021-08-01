@@ -1,13 +1,16 @@
 package ua.com.nure.fitnessassistant.service.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ua.com.nure.fitnessassistant.model.user.User;
-import java.util.List;
+
+
 import java.util.UUID;
 
 public interface UserService {
 
 
-    List<User> getAll();
+    Page<User> getUsers(Pageable pageable);
 
     User findByUserName(String userName);
 
