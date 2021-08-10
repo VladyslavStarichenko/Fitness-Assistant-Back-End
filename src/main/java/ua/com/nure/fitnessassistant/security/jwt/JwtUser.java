@@ -9,7 +9,6 @@ import ua.com.nure.fitnessassistant.model.user.Status;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 public class JwtUser implements UserDetails {

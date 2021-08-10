@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.dto;
+package ua.com.nure.fitnessassistant.dto.request;
 
 import lombok.Data;
 

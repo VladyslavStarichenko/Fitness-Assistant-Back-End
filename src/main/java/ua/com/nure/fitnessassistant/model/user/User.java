@@ -1,20 +1,28 @@
 package ua.com.nure.fitnessassistant.model.user;
 
-import lombok.Data;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+import ua.com.nure.fitnessassistant.model.program.Program;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
-@Data
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -55,22 +63,30 @@ public class User extends BaseEntity{
     private Goal goal;
 
 
-    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-    joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private List<Role> roles;
 
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "created_by")
+    private Set<Program> programs = new HashSet<>();
+
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-            return false;
-        if (obj == this)
-            return true;
-        return this == ((User) obj);
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", age=" + age +
+                ", goal=" + goal +
+                ", roles=" + roles +
+                ", programs=" + programs +
+                '}';
     }
-
-
 }
