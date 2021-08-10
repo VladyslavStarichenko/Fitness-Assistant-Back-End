@@ -1,16 +1,15 @@
 package ua.com.nure.fitnessassistant.repository;
 
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.User;
-import java.util.UUID;
 
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
-    User findUserByUserName(String name);
+public interface ProgramRepository extends JpaRepository<Program, Long> {
 
-    boolean existsByUserName(String userName);
+    Program findProgramByName(String name);
 
 }

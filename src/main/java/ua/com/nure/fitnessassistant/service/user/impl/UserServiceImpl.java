@@ -35,16 +35,16 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //    @Override
-//    public Page<User> findAllUsers(Pageable pageable) {
-//        Page<User> result = userRepository.findAll(pageable);
-//        log.info("IN getAll - {} users found", result.getTotalPages());
-//        return result;
-//    }
     @Override
     public Page<User> getUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        Page<User> result = userRepository.findAll(pageable);
+        log.info("IN getAll - {} users found", result.getTotalPages());
+        return result;
     }
+//    @Override
+//    public Page<User> getUsers(Pageable pageable) {
+//        return userRepository.findAll(pageable);
+//    }
 
 
     @Override
@@ -62,24 +62,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(UUID id) {
-//        Optional<User> userDb = this.userRepository.findById(id);
-//        if (userDb.isPresent()) {
-//            log.info("IN findById - user: {} found by id: {}", userDb,id);
-//            return userDb.get();
-//        }else{
-//            log.warn("IN findById - no user found by id: {}", id);
-//            throw new CustomException("There is no User found with request id: " + id,
-//                    HttpStatus.NOT_FOUND);
-//        }
-        User result = userRepository.findById(id).orElse(null);
-
-        if (result == null) {
+        Optional<User> userDb = this.userRepository.findById(id);
+        if (userDb.isPresent()) {
+            log.info("IN findById - user: {} found by id: {}", userDb,id);
+            return userDb.get();
+        }else{
             log.warn("IN findById - no user found by id: {}", id);
-            return null;
+            throw new CustomException("There is no User found with request id: " + id,
+                    HttpStatus.NOT_FOUND);
         }
-
-        log.info("IN findById - user: {} found by id: {}", result);
-        return result;
+//        User result = userRepository.findById(id).orElse(null);
+//
+//        if (result == null) {
+//            log.warn("IN findById - no user found by id: {}", id);
+//            return null;
+//        }
+//
+//        log.info("IN findById - user: {} found by id: {}", result,result.getId());
+//        return result;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
             this.userRepository.delete(userDb.get());
             log.info("IN delete - user with id: {} successfully deleted", id);
         } else {
-            throw new CustomException("There is no Category found with request id: " + id,
+            throw new CustomException("There is no User found with request id: " + id,
                     HttpStatus.NOT_FOUND);
         }
 

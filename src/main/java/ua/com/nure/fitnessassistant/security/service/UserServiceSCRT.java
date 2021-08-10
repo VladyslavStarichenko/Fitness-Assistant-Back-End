@@ -7,10 +7,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.com.nure.fitnessassistant.dto.AuthenticationRequestDto;
+import ua.com.nure.fitnessassistant.dto.request.AuthenticationRequestDto;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.user.Role;
 import ua.com.nure.fitnessassistant.model.user.Status;
@@ -18,11 +21,9 @@ import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.RoleRepository;
 import ua.com.nure.fitnessassistant.repository.UserRepository;
 import ua.com.nure.fitnessassistant.security.jwt.JwtTokenProvider;
+import ua.com.nure.fitnessassistant.service.user.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -30,23 +31,24 @@ public class UserServiceSCRT {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
     @Autowired
-    public UserServiceSCRT(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public UserServiceSCRT(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
     }
 
 
     public Map<Object,Object> signup(User user) {
         if (!userRepository.existsByUserName(user.getUserName())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             Role roleUser = roleRepository.findByName("ROLE_USER");
             List<Role> userRoles = new ArrayList<>();
             userRoles.add(roleUser);
@@ -87,5 +89,12 @@ public class UserServiceSCRT {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
+
+    public User getCurrentLoggedInUser() {
+        String username =  SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.findByUserName(username);
+    }
+
+
 
 }

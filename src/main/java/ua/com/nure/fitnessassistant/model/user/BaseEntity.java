@@ -1,18 +1,23 @@
 package ua.com.nure.fitnessassistant.model.user;
 
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import ua.com.nure.fitnessassistant.model.user.Status;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseEntity {
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created")
     private Date createdAt;
 
