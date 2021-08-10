@@ -1,6 +1,6 @@
 package ua.com.nure.fitnessassistant.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import ua.com.nure.fitnessassistant.model.user.Role;
 

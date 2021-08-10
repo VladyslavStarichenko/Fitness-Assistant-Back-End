@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.com.nure.fitnessassistant.dto.UserDto;
+import ua.com.nure.fitnessassistant.dto.response.UserDto;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 import ua.com.nure.fitnessassistant.service.user.impl.UserServiceImpl;
