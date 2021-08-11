@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.com.nure.fitnessassistant.dto.request.AuthenticationRequestDto;
+import ua.com.nure.fitnessassistant.dto.user.request.AuthenticationDto;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.user.Role;
 import ua.com.nure.fitnessassistant.model.user.Status;
@@ -69,7 +69,7 @@ public class UserServiceSCRT {
         }
     }
 
-    public Map<Object, Object> signIn(AuthenticationRequestDto requestDto) throws AuthenticationException {
+    public Map<Object, Object> signIn(AuthenticationDto requestDto) throws AuthenticationException {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,requestDto.getPassword()));
