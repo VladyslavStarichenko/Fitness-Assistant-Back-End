@@ -39,9 +39,6 @@ public class Program extends BaseEntity implements Serializable {
     private User created_by;
 
 
-//    private transient UUID userId;
-
-
     @ManyToMany
     @JoinTable(
             name = "program_exercise",

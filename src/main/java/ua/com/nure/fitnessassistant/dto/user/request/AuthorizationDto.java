@@ -1,48 +1,57 @@
-package ua.com.nure.fitnessassistant.dto.response;
-
+package ua.com.nure.fitnessassistant.dto.user.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.Goal;
 import ua.com.nure.fitnessassistant.model.user.User;
 
-import java.util.List;
-import java.util.Set;
+import java.sql.Date;
+import java.time.LocalDate;
+
+import java.util.UUID;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
+public class AuthorizationDto {
 
+    private UUID id;
     private String username;
     private String firstName;
     private String lastName;
-    private String email;
+    private String mail;
     private Integer age;
-    private Set<Program> programs;
     private Goal goal;
+    private String password;
+    private Date created;
+    private Date updated;
 
     public User toUser(){
         User user = new User();
+        user.setId(id);
         user.setUserName(username);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setMail(email);
+        user.setMail(mail);
         user.setAge(age);
         user.setGoal(goal);
-        user.setPrograms(programs);
+        user.setPassword(password);
+//        user.setCreatedAt(Date.valueOf(LocalDate.now()));
+//        user.setUpdatedAt(Date.valueOf(LocalDate.now()));
         return user;
     }
 
-    public static UserDto fromUser(User user) {
-        UserDto userDto = new UserDto();
+    public static AuthorizationDto fromUser(User user) {
+        AuthorizationDto userDto = new AuthorizationDto();
+        userDto.setId(user.getId());
         userDto.setUsername(user.getUserName());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
-        userDto.setEmail(user.getMail());
+        userDto.setMail(user.getMail());
         userDto.setAge(user.getAge());
         userDto.setGoal(user.getGoal());
-        userDto.setPrograms(user.getPrograms());
+        userDto.setPassword(userDto.getPassword());
+        userDto.setCreated((Date) user.getCreatedAt());
+        userDto.setUpdated((Date) user.getUpdatedAt());
         return userDto;
     }
 }
