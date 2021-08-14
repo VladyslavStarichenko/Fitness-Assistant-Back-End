@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import ua.com.nure.fitnessassistant.dto.exercise.response.ExerciseGetDto;
 import ua.com.nure.fitnessassistant.dto.program.request.ProgramCreateDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramGetDto;
+import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.exercise.Exercise;
 import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.Status;
+import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.ExerciseRepository;
 import ua.com.nure.fitnessassistant.repository.ProgramRepository;
 import ua.com.nure.fitnessassistant.security.service.UserServiceSCRT;
+import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,9 @@ public class ProgramController {
     ProgramRepository programRepository;
 
     @Autowired
+    ProgramServiceImpl programService;
+
+    @Autowired
     UserServiceSCRT userServiceSCRT;
 
     //TODO use Service to make a connection
@@ -41,21 +48,20 @@ public class ProgramController {
     @Autowired
     ExerciseRepository exerciseRepository;
 
-    @Autowired
-    ProgramGetDto programGetDtoInstance;
 
-    @Autowired
-    ExerciseGetDto exerciseGetDto;
+
+
 
     @GetMapping
     public ResponseEntity<List<ProgramGetDto>> getAllPrograms() {
         List<Program> programs = this.programRepository.findAll();
         List<ProgramGetDto> programGetDtoList = programs
                 .stream()
-                .map(program -> programGetDtoInstance.fromProgram(program))
+                .map(programService::fromProgram)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(programGetDtoList);
     }
+
 
     @PostMapping
     public ResponseEntity<ProgramGetDto> createProgram (@RequestBody ProgramCreateDto programCreateDto){
@@ -63,23 +69,35 @@ public class ProgramController {
         program.setName(programCreateDto.getName());
         program.setCreated_by(userServiceSCRT.getCurrentLoggedInUser());
         program.setStatus(Status.ACTIVE);
-        this.programRepository.save(program);
-        ProgramGetDto programGetDto = programGetDtoInstance.fromProgram(program);
-
+        this.programService.createProgram(program);
+        ProgramGetDto programGetDto = programService.fromProgram(program);
         return new  ResponseEntity<>(programGetDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{programId}/exercises/{exerciseId}")
-    ResponseEntity<Program> AddExeToProgram(
-            @PathVariable Long programId,
-            @PathVariable Long exerciseId
-    ){
-        //TODO add checking for Optional
-        Program program =  programRepository.findById(programId).get();
-        Exercise exercise = exerciseRepository.findById(exerciseId).get();
-        program.addExercise(exercise);
 
-        return ResponseEntity.ok().body(programRepository.save(program));
+    @PutMapping("{programName}/{programAuthor}/exercises/{exerciseName}")
+    ResponseEntity<ProgramGetDto> AddExeToProgram(
+            @PathVariable String programName,
+            @PathVariable String programAuthor,
+            @PathVariable String exerciseName
+    ){
+        User loggedInUser = userServiceSCRT.getCurrentLoggedInUser();
+        Optional<Program> programDb =  programRepository.findProgramByNameAndCreatedBy(programName,programAuthor);
+        if (programDb.isEmpty()){
+            throw new CustomException("There is no program found with requested data", HttpStatus.NOT_FOUND);
+        }
+
+        Program program = programDb.get();
+        if(!program.getCreated_by().getUserName().equals(loggedInUser.getUserName())){
+            throw new CustomException("You're not allowed to change this program", HttpStatus.FORBIDDEN);
+        }
+        Optional<Exercise> exerciseDb = exerciseRepository.findExercisesByName(exerciseName);
+        if(exerciseDb.isEmpty()){
+            throw new CustomException("There is no exercise found with requested data", HttpStatus.NOT_FOUND);
+        }
+        program.addExercise(exerciseDb.get());
+        programRepository.save(program);
+        return ResponseEntity.ok().body(programService.fromProgram(program));
     }
 
 }

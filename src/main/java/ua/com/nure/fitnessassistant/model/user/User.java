@@ -1,6 +1,5 @@
 package ua.com.nure.fitnessassistant.model.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -47,7 +46,7 @@ public class User extends BaseEntity {
     @Pattern(regexp = "\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
             message = "Mail should be in format: example (myemail@address.com)")
     @Column(name = "mail")
-    private String mail;
+    private String email;
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
     message = "Password should contain at least one capital letter, one lowercase letter, special character," +
@@ -81,7 +80,7 @@ public class User extends BaseEntity {
                 ", userName='" + userName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", mail='" + mail + '\'' +
+                ", mail='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
                 ", goal=" + goal +

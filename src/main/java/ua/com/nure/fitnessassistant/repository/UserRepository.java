@@ -13,4 +13,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
 
     boolean existsByUserName(String userName);
 
+
+
 }

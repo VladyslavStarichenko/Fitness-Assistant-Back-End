@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.nure.fitnessassistant.dto.user.request.AuthenticationDto;
-import ua.com.nure.fitnessassistant.dto.user.request.AuthorizationDto;
+import ua.com.nure.fitnessassistant.dto.user.request.CUUserDto;
 import ua.com.nure.fitnessassistant.security.service.UserServiceSCRT;
 
 import java.util.Map;
@@ -13,14 +13,14 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
-public class AuthenticationControllerV1 {
+public class AuthenticationController {
 
 
 
     private final UserServiceSCRT userService;
 
     @Autowired
-    public AuthenticationControllerV1(UserServiceSCRT userService) {
+    public AuthenticationController(UserServiceSCRT userService) {
         this.userService = userService;
     }
 
@@ -32,7 +32,7 @@ public class AuthenticationControllerV1 {
 
 
     @PostMapping("signUp")
-    public ResponseEntity signUp (@RequestBody AuthorizationDto user){
+    public ResponseEntity signUp (@RequestBody CUUserDto user){
         Map<Object, Object> response = userService.signup(user.toUser());
         return ResponseEntity.ok(response);
     }

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.model.user.User;
+import ua.com.nure.fitnessassistant.repository.UserRepository;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUser;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUserFactory;
 import ua.com.nure.fitnessassistant.service.user.UserService;
@@ -16,15 +17,17 @@ import ua.com.nure.fitnessassistant.service.user.UserService;
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtUserDetailsService(UserService userService) {
+    public JwtUserDetailsService(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByUserName(username);
+        User user = userRepository.findUserByUserName(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User with username: " + username + " not found");

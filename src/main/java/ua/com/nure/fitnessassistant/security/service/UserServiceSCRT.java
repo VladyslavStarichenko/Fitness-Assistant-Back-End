@@ -92,7 +92,7 @@ public class UserServiceSCRT {
 
     public User getCurrentLoggedInUser() {
         String username =  SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.findByUserName(username);
+        return userRepository.findUserByUserName(username);
     }
 
 
