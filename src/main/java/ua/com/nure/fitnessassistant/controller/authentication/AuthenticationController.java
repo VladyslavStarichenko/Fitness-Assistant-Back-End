@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.controller;
+package ua.com.nure.fitnessassistant.controller.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

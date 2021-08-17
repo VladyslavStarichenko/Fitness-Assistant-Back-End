@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.model.user.User;
-import ua.com.nure.fitnessassistant.repository.UserRepository;
+import ua.com.nure.fitnessassistant.repository.user.UserRepository;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUser;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUserFactory;
 import ua.com.nure.fitnessassistant.service.user.UserService;

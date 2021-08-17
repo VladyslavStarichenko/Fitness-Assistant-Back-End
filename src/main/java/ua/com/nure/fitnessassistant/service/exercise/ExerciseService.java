@@ -20,7 +20,7 @@ public interface ExerciseService {
 
     Exercise findById(Long id);
 
-    Exercise findByExerciseByName(String name);
+    Exercise findExerciseByName(String name);
 
     void delete(String name);
 

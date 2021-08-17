@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.repository;
+package ua.com.nure.fitnessassistant.repository.program;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

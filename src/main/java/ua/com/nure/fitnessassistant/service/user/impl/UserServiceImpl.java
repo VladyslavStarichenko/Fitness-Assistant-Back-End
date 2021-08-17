@@ -5,26 +5,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.dto.user.request.CUUserDto;
 import ua.com.nure.fitnessassistant.dto.user.response.UserDto;
+import ua.com.nure.fitnessassistant.dto.user.response.UserPageResponse;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
-import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.User;
-import ua.com.nure.fitnessassistant.repository.ProgramRepository;
-import ua.com.nure.fitnessassistant.repository.UserRepository;
+import ua.com.nure.fitnessassistant.repository.program.ProgramRepository;
+import ua.com.nure.fitnessassistant.repository.user.UserRepository;
 import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -118,18 +114,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-//    @Override
-//    public User addProgram(String programName, User user, String programAuthor) {
-//        Optional<Program> programDb = (programRepository.findProgramByNameAndCreatedBy(programName,programAuthor));
-//        if(programDb.isEmpty()){
-//           throw new CustomException("There is no program found with name: " + programName,HttpStatus.NOT_FOUND);
-//        }
-//        user.getPrograms().add(programDb.get());
-//        log.info("IN addProgram : user with id: {} successfully added Program: {}", user.getId(), programName);
-//        userRepository.save(user);
-//        return user;
-//    }
-
 
     public UserDto fromUser(User user) {
         UserDto userDto = modelMapper.map(user,UserDto.class);
@@ -141,6 +125,12 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         return userDto;
     }
+
+    public UserPageResponse fromPage(Page<UserDto> users){
+        return modelMapper.map(users, UserPageResponse.class);
+    }
+
+
 
 
 

@@ -18,8 +18,8 @@ import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.user.Role;
 import ua.com.nure.fitnessassistant.model.user.Status;
 import ua.com.nure.fitnessassistant.model.user.User;
-import ua.com.nure.fitnessassistant.repository.RoleRepository;
-import ua.com.nure.fitnessassistant.repository.UserRepository;
+import ua.com.nure.fitnessassistant.repository.role.RoleRepository;
+import ua.com.nure.fitnessassistant.repository.user.UserRepository;
 import ua.com.nure.fitnessassistant.security.jwt.JwtTokenProvider;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 

@@ -14,7 +14,7 @@ import ua.com.nure.fitnessassistant.dto.exercise.response.ExerciseGetDto;
 import ua.com.nure.fitnessassistant.dto.exercise.response.ExercisePageResponse;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.exercise.Exercise;
-import ua.com.nure.fitnessassistant.repository.ExerciseRepository;
+import ua.com.nure.fitnessassistant.repository.exercise.ExerciseRepository;
 
 import ua.com.nure.fitnessassistant.service.exercise.ExerciseService;
 
@@ -56,7 +56,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Exercise findByExerciseByName(String name) {
+    public Exercise findExerciseByName(String name) {
         Optional<Exercise> exerciseDb = this.exerciseRepository.findExercisesByName(name);
         if (exerciseDb.isPresent()) {
             Exercise result = exerciseDb.get();

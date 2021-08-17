@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.repository;
+package ua.com.nure.fitnessassistant.repository.exercise;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package ua.com.nure.fitnessassistant.repository;
+package ua.com.nure.fitnessassistant.repository.role;
 
 
 import org.springframework.data.repository.PagingAndSortingRepository;

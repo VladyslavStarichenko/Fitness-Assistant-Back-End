@@ -1,7 +1,6 @@
 package ua.com.nure.fitnessassistant.model.program;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.models.parameters.SerializableParameter;
 import lombok.*;
 import ua.com.nure.fitnessassistant.model.exercise.Exercise;
 import ua.com.nure.fitnessassistant.model.user.BaseEntity;
@@ -10,9 +9,8 @@ import ua.com.nure.fitnessassistant.model.user.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+
 
 
 @Getter
@@ -49,6 +47,10 @@ public class Program extends BaseEntity implements Serializable {
 
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
+    }
+
+    public void removeExercise(Exercise exercise){
+        exercises.remove(exercise);
     }
 }
 
