@@ -18,8 +18,8 @@ import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.user.Role;
 import ua.com.nure.fitnessassistant.model.user.Status;
 import ua.com.nure.fitnessassistant.model.user.User;
-import ua.com.nure.fitnessassistant.repository.RoleRepository;
-import ua.com.nure.fitnessassistant.repository.UserRepository;
+import ua.com.nure.fitnessassistant.repository.role.RoleRepository;
+import ua.com.nure.fitnessassistant.repository.user.UserRepository;
 import ua.com.nure.fitnessassistant.security.jwt.JwtTokenProvider;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 
@@ -73,13 +73,13 @@ public class UserServiceSCRT {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,requestDto.getPassword()));
-            User user = userRepository.findUserByUserName(username);
+            Optional<User> user = userRepository.findUserByUserName(username);
 
-            if(user == null){
+            if(user.isEmpty()){
                 throw new UsernameNotFoundException("User with username: " + username + "wasn't found");
             }
             log.info("IN signIn - user: {} successfully signedIN", userRepository.findUserByUserName(username));
-            String token = jwtTokenProvider.createToken(username, user.getRoles());
+            String token = jwtTokenProvider.createToken(username, user.get().getRoles());
 
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
@@ -92,7 +92,11 @@ public class UserServiceSCRT {
 
     public User getCurrentLoggedInUser() {
         String username =  SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.findByUserName(username);
+        if(userRepository.findUserByUserName(username).isPresent()){
+            return userRepository.findUserByUserName(username).get();
+        }
+        throw new UsernameNotFoundException("User with username: " + username + "wasn't found, you should authorize firstly") {
+        };
     }
 
 
