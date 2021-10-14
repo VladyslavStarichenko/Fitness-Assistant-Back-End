@@ -41,6 +41,7 @@ public class ExerciseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ExerciseGetDto> createExercise(@RequestBody CreateExerciseDto createExerciseDto) {
+
         Exercise exercise = new Exercise();
         exercise.setName(createExerciseDto.getName());
         exercise.setStatus(Status.ACTIVE);

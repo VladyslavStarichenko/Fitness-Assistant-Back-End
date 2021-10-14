@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserName(String userName) {
-        Optional<User> userDb = Optional.ofNullable(this.userRepository.findUserByUserName(userName));
+        Optional<User> userDb = this.userRepository.findUserByUserName(userName);
         if (userDb.isPresent()) {
             User result = userDb.get();
             log.info("IN findByUsername - user: {} found by username: {}", result, userName);

@@ -8,6 +8,7 @@ import ua.com.nure.fitnessassistant.model.program.Program;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.beans.ConstructorProperties;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User extends BaseEntity {
 

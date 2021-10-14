@@ -12,6 +12,8 @@ import ua.com.nure.fitnessassistant.security.jwt.JwtUser;
 import ua.com.nure.fitnessassistant.security.jwt.JwtUserFactory;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
@@ -27,13 +29,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserName(username);
+        Optional<User> user = userRepository.findUserByUserName(username);
 
-        if (user == null) {
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("User with username: " + username + " not found");
         }
 
-        JwtUser jwtUser = JwtUserFactory.create(user);
+        JwtUser jwtUser = JwtUserFactory.create(user.get());
         log.info("IN loadUserByUsername - user with username: {} successfully loaded", username);
         return jwtUser;
     }}

@@ -58,23 +58,16 @@ class ExerciseRepositoryTest {
         //when
         Optional<Exercise> exerciseDb = exerciseRepository.findExercisesByName(name);
         //then
-        Exercise exercise1 = new Exercise();
-        if(exerciseDb.isPresent()){
-            exercise1 = exerciseDb.get();
-        }
-        assertThat(exercise1.getName().equals(name)).isTrue();
+        exerciseDb.ifPresent(exercise1 -> assertThat(exercise1.getName().equals(name)).isTrue());
     }
 
     @Test
     void  ifNotFindExercisesByName() {
         //given
         String name = "squats";
-
         //when
         Optional<Exercise> exerciseDb = exerciseRepository.findExercisesByName(name);
-
         //then
-
         Exception exception = assertThrows(NoSuchElementException.class, () -> {
             exerciseDb.get();
         });
