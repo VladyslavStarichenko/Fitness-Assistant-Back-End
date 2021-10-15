@@ -1,5 +1,8 @@
 package ua.com.nure.fitnessassistant.controller.user;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user/")
+@Api(value = "Operations with users")
 @CrossOrigin
 public class UserController {
 
@@ -51,51 +55,52 @@ public class UserController {
     }
 
 
-
+    @ApiOperation(value = "Get current logged in user account")
     @GetMapping("myAccount")
     public ResponseEntity<UserDto> getCurrentUser() {
         User loggedInUser = userServiceSCRT.getCurrentLoggedInUser();
         if (loggedInUser == null) {
             throw new CustomException("You should authorize firstly", HttpStatus.UNAUTHORIZED);
         }
-            UserDto result = this.userServiceImpl.fromUser(loggedInUser);
-            return  ResponseEntity.ok().body(result);
+        UserDto result = this.userServiceImpl.fromUser(loggedInUser);
+        return ResponseEntity.ok().body(result);
 
     }
 
 
-    @PutMapping("myAccount/update" )
-    public ResponseEntity<UserDto> updateAccount(@RequestBody CUUserDto userDto) {
+    @ApiOperation(value = "Update current logged in user account")
+    @PutMapping("myAccount/update")
+    public ResponseEntity<UserDto> updateAccount(@ApiParam(value = "User object to update") @RequestBody CUUserDto userDto) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         if (loggedInUser == null) {
             throw new CustomException("You should authorize firstly", HttpStatus.UNAUTHORIZED);
         }
-        User user = this.userServiceImpl.updateUser(loggedInUser.getId(),userDto);
+        User user = this.userServiceImpl.updateUser(loggedInUser.getId(), userDto);
         UserDto result = this.userServiceImpl.fromUser(user);
-        return  ResponseEntity.ok().body(result);
+        return ResponseEntity.ok().body(result);
 
     }
 
-
-    @DeleteMapping("myAccount/delete/{password}" )
-    public ResponseEntity deleteAccount(@PathVariable String password) {
+    @ApiOperation(value = "Delete current logged in user account")
+    @DeleteMapping("myAccount/delete/{password}")
+    public ResponseEntity deleteAccount(@ApiParam(value = "Password to confirm deleting") @PathVariable String password) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         if (loggedInUser == null) {
             throw new CustomException("You should authorize firstly", HttpStatus.UNAUTHORIZED);
         }
-        if(!passwordEncoder.encode(password).equals(loggedInUser.getPassword())){
+        if (!passwordEncoder.encode(password).equals(loggedInUser.getPassword())) {
             throw new CustomException("Wrong Credentials, try again", HttpStatus.FORBIDDEN);
         }
         this.userServiceImpl.delete(loggedInUser.getId());
-        return  ResponseEntity.ok().body("Account Successfully deleted");
+        return ResponseEntity.ok().body("Account Successfully deleted");
     }
 
-
+    @ApiOperation(value = "Get current logged in user programs")
     @GetMapping("myPrograms/pageNumber={pageNumber}/pageSize={pageSize}/sortBy={sortBy}")
     public ResponseEntity<ProgramPageResponse> getMyPrograms(
-            @PathVariable int pageNumber,
-            @PathVariable int pageSize,
-            @PathVariable String sortBy
+            @ApiParam(value = "Page number to show") @PathVariable int pageNumber,
+            @ApiParam(value = "Page size") @PathVariable int pageSize,
+            @ApiParam(value = "Sort information by parameter") @PathVariable(required = false) String sortBy
     ) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         if (loggedInUser == null) {
@@ -116,49 +121,49 @@ public class UserController {
         response.setPageNumber(pageNumber);
         response.setPageSize(pageSize);
         response.setTotalElements(programsSet.size());
-        response.setTotalPages(programsSet.size()/pageSize);
+        response.setTotalPages(programsSet.size() / pageSize);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 
+    @ApiOperation(value = "Get user by id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("users/id={id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable UUID id){
+    public ResponseEntity<UserDto> getUserById(@ApiParam(value = "User id to search") @PathVariable UUID id) {
         User user = userServiceImpl.findById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         UserDto result = userServiceImpl.fromUser(user);
-        return  new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get user by name")
     @GetMapping("users/userName={userName}")
-    public ResponseEntity<UserDto> getUserByName(@PathVariable(name = "userName") String userName){
+    public ResponseEntity<UserDto> getUserByName(@ApiParam(value = "User name to search") @PathVariable(name = "userName") String userName) {
         User user = userServiceImpl.findByUserName(userName);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         UserDto result = userServiceImpl.fromUser(user);
-        return  new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
+    @ApiOperation(value = "Get all users")
     @GetMapping("users/pageNumber={pageNumber}/pageSize={pageSize}/sortBy={sortBy}")
-    public ResponseEntity<UserPageResponse> getUsers(@PathVariable int pageNumber,
-                                                     @PathVariable int pageSize,
-                                                     @PathVariable String sortBy){
-
-        Page<User> userPage = userServiceImpl.getUsersPage(pageNumber,pageSize,sortBy);
+    public ResponseEntity<UserPageResponse> getUsers(@ApiParam(value = "Page number to show") @PathVariable int pageNumber,
+                                                     @ApiParam(value = "Page size") @PathVariable int pageSize,
+                                                     @ApiParam(value = "Sort information by parameter") @PathVariable String sortBy) {
+        Page<User> userPage = userServiceImpl.getUsersPage(pageNumber, pageSize, sortBy);
         Page<UserDto> page = new PageImpl<>(userPage.stream()
                 .map(userServiceImpl::fromUser)
-                .collect(Collectors.toList()),userPage.getPageable(),userPage.getTotalElements());
-
+                .collect(Collectors.toList()), userPage.getPageable(), userPage.getTotalElements());
         UserPageResponse response = userServiceImpl.fromPage(page);
         response.setUsers(page.getContent());
         response.setSortedBy(sortBy);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
 }
-
