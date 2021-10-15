@@ -1,8 +1,5 @@
 package ua.com.nure.fitnessassistant.controller.authentication;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +13,6 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@Api(value = "Authentication operations (login, sign up)")
 @RequestMapping(value = "/api/v1/auth/")
 public class AuthenticationController {
 
@@ -28,12 +24,9 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-
-
     @PostMapping("login")
-    @ApiOperation(value = "Login to the system")
-    public ResponseEntity login(@ApiParam(value = "Registered User object") @RequestBody AuthenticationDto requestDto) {
-        if (requestDto == null) {
+    public ResponseEntity login(@RequestBody AuthenticationDto requestDto) {
+        if(requestDto == null){
             throw new EmptyDataException("Invalid or empty input");
         }
         Map<Object, Object> response = userService.signIn(requestDto);
@@ -42,9 +35,8 @@ public class AuthenticationController {
 
 
     @PostMapping("signUp")
-    @ApiOperation(value = "Sign up to the system")
-    public ResponseEntity signUp(@ApiParam(value = "User object to sign up to the system") @RequestBody CUUserDto user) {
-        if (user == null) {
+    public ResponseEntity signUp(@RequestBody CUUserDto user) {
+        if(user == null){
             throw new EmptyDataException("Invalid or empty input");
         }
         Map<Object, Object> response = userService.signup(user.toUser());
