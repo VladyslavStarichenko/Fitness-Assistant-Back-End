@@ -84,7 +84,7 @@ public class ProgramServiceImpl implements ProgramService {
     public void delete(String name, User user) {
 
         Optional<Program> programDb = this.programRepository.findProgramByName(name);
-        if (programDb.isEmpty()) {
+        if (!programDb.isPresent()) {
             log.warn("Program with name: {} wasn't found", name);
             throw new CustomException("There is no program with name:" + name,
                     HttpStatus.NOT_FOUND);
@@ -101,7 +101,7 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public Program updateProgram(String programName, String name, User user) {
         Optional<Program> programDb = this.programRepository.findProgramByName(programName);
-        if (programDb.isEmpty()) {
+        if (!programDb.isPresent()) {
             log.warn("Program with name: {} wasn't found", programName);
             throw new CustomException("There is no program with name:" + programName + " to update",
                     HttpStatus.NOT_FOUND);
