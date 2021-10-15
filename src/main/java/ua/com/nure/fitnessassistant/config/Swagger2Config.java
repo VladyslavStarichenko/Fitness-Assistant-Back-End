@@ -34,13 +34,25 @@ public class Swagger2Config {
                 .build().apiInfo(apiEndPointsInfo());
     }
 
-    private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("Spring Boot REST API")
-                .description("Sport Nutrition Store REST API")
-                .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .version("1.0")
-                .build();
+//    private ApiInfo apiEndPointsInfo() {
+//        return new ApiInfoBuilder().title("Fitness Assistant Service")
+//                .description("Fitness Assistant API")
+//                .license("Apache 2.0")
+//                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+//                .version("1.0")
+//                .build();
+//    }
+    private ApiInfo apiEndPointsInfo(){
+        return new ApiInfo("Fitness Assistant",
+                "Fitness Assistant API",
+                "1.0",
+                "Free to use",
+                new springfox.documentation.service.Contact("Vladyslav Starichenko",
+                        "https://github.com/VladyslavStarichenko",
+                        "vladysalv.starichenko@nure.ua"),
+                "Apache 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html",
+                Collections.emptyList());
     }
 
     private ApiKey apiKey() {
