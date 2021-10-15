@@ -75,7 +75,7 @@ public class UserServiceSCRT {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,requestDto.getPassword()));
             Optional<User> user = userRepository.findUserByUserName(username);
 
-            if(user.isEmpty()){
+            if(!user.isPresent()){
                 throw new UsernameNotFoundException("User with username: " + username + "wasn't found");
             }
             log.info("IN signIn - user: {} successfully signedIN", userRepository.findUserByUserName(username));

@@ -130,7 +130,7 @@ public class ProgramController {
     ) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         Optional<Program> programDb = programRepository.findProgramByNameAndCreatedBy(programName, loggedInUser.getUserName());
-        if (programDb.isEmpty()) {
+        if (!programDb.isPresent()) {
             throw new CustomException("There is no program found with requested data", HttpStatus.NOT_FOUND);
         }
 
@@ -152,7 +152,7 @@ public class ProgramController {
     ) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         Optional<Program> programDb = programRepository.findProgramByNameAndCreatedBy(programName, loggedInUser.getUserName());
-        if (programDb.isEmpty()) {
+        if (!programDb.isPresent()) {
             throw new CustomException("There is no program found with requested data", HttpStatus.NOT_FOUND);
         }
         Program program = programDb.get();

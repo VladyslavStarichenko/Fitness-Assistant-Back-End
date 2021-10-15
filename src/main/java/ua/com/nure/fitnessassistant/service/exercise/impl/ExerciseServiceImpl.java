@@ -85,7 +85,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public void delete(String name) {
         Optional<Exercise> exerciseDb = this.exerciseRepository.findExercisesByName(name);
-        if (exerciseDb.isEmpty()){
+        if (!exerciseDb.isPresent()){
             throw new CustomException("There is no exercise with name:" + name,HttpStatus.NOT_FOUND);
         }
         log.info("IN deleteExercise: exercise with name {} was successfully deleted",name);
@@ -96,7 +96,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public Exercise updateExercise(Exercise exerciseUpdate, String name) {
         Optional<Exercise> exerciseDb = this.exerciseRepository.findExercisesByName(name);
-        if(exerciseDb.isEmpty()){
+        if(!exerciseDb.isPresent()){
             throw new CustomException("There is no exercise found with name:" + name + " to update",
                     HttpStatus.NOT_FOUND);
         }
