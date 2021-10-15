@@ -34,14 +34,6 @@ public class Swagger2Config {
                 .build().apiInfo(apiEndPointsInfo());
     }
 
-//    private ApiInfo apiEndPointsInfo() {
-//        return new ApiInfoBuilder().title("Fitness Assistant Service")
-//                .description("Fitness Assistant API")
-//                .license("Apache 2.0")
-//                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-//                .version("1.0")
-//                .build();
-//    }
     private ApiInfo apiEndPointsInfo(){
         return new ApiInfo("Fitness Assistant",
                 "Fitness Assistant API",
