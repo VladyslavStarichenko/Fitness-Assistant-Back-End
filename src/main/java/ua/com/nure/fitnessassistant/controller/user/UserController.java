@@ -68,7 +68,7 @@ public class UserController {
     }
 
 
-    @ApiOperation(value = "Update current logged in user account")
+    @ApiOperation(value = "Update my account")
     @PutMapping("myAccount/update")
     public ResponseEntity<UserDto> updateAccount(@ApiParam(value = "User object to update") @RequestBody CUUserDto userDto) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
