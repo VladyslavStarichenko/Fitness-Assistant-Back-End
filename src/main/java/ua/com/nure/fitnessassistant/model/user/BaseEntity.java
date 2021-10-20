@@ -3,6 +3,7 @@ package ua.com.nure.fitnessassistant.model.user;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import ua.com.nure.fitnessassistant.model.user.Status;
@@ -22,7 +23,7 @@ public class BaseEntity {
     @Column(name = "created")
     private Date createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated")
     private Date updatedAt;
 

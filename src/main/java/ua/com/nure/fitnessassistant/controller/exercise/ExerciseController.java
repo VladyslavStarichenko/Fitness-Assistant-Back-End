@@ -57,7 +57,7 @@ public class ExerciseController {
     @GetMapping("exercises/pageNumber={pageNumber}/pageSize={pageSize}/sortBy={sortBy}")
     public ResponseEntity<ExercisePageResponse> getAllExercise(@ApiParam(value = "Page number to show") @PathVariable int pageNumber,
                                                                @ApiParam(value = "Page size") @PathVariable int pageSize,
-                                                               @ApiParam(value = "Sort information by parameter") @PathVariable(required = false) String sortBy
+                                                               @ApiParam(value = "Sort information by parameter") @RequestParam(required = false) @PathVariable() String sortBy
     ) {
         Page<Exercise> exercises = this.exerciseServiceImpl.getAllExercises(pageNumber, pageSize, sortBy);
         Page<ExerciseGetDto> page = new PageImpl<>(exercises.stream()

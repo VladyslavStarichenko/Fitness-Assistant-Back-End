@@ -21,14 +21,6 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="first_name" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="last_name" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -38,7 +30,7 @@
             </column>
 
             <column name="updated" type="TIMESTAMP" defaultValue="now()">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
             <column name="status" type="VARCHAR(25)" defaultValue="ACTIVE">
@@ -49,6 +41,9 @@
             </column>
 
             <column name="age" type="INT">
+            </column>
+
+            <column name="weight" type="INT">
             </column>
 
         </createTable>
@@ -212,8 +207,7 @@
             <column name="id" value="076a697c-2d1f-11ec-8d3d-0242ac130003"/>
             <column name="user_name" value="goldsilverTest1"/>
             <column name="mail" value="vladstar744@gmail.com"/>
-            <column name="first_name" value="Vladyslav"/>
-            <column name="last_name" value="Starichenko"/>
+            <column name="weight" value="80"/>
             <column name="created" value="2021-09-29 22:54:27.291000"/>
             <column name="status" value="ACTIVE"/>
             <column name="goal" value="MASSGAINING"/>
@@ -225,8 +219,7 @@
             <column name="id" value="3dd493ac-2d1f-11ec-8d3d-0242ac130003"/>
             <column name="user_name" value="goldsilverTest2"/>
             <column name="mail" value="vladstar775@gmail.com"/>
-            <column name="first_name" value="Vlad"/>
-            <column name="last_name" value="Str"/>
+            <column name="weight" value="70"/>
             <column name="created" value="2021-09-29 22:54:27.291000"/>
             <column name="status" value="ACTIVE"/>
             <column name="goal" value="MASSGAINING"/>
@@ -238,8 +231,7 @@
             <column name="id" value="44935908-2d1f-11ec-8d3d-0242ac130003"/>
             <column name="user_name" value="goldsilverTest3"/>
             <column name="mail" value="vladstar21@gmail.com"/>
-            <column name="first_name" value="Vladyslav"/>
-            <column name="last_name" value="Star"/>
+            <column name="weight" value="65"/>
             <column name="created" value="2021-09-29 22:54:27.291000"/>
             <column name="status" value="ACTIVE"/>
             <column name="goal" value="MASSGAINING"/>

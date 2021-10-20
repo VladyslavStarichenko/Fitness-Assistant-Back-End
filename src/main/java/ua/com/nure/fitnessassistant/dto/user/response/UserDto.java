@@ -13,10 +13,9 @@ import java.util.Set;
 public class UserDto {
 
     private String username;
-    private String firstName;
-    private String lastName;
     private String email;
     private Integer age;
+    private Integer weight;
     private Set<ProgramGetDto> programs;
     private Goal goal;
 

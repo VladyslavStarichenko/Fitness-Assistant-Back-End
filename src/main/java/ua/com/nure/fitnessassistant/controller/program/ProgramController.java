@@ -70,7 +70,7 @@ public class ProgramController {
     public ResponseEntity<ProgramPageResponse> getAllPrograms(
             @ApiParam(value = "Page number to show") @PathVariable int pageNumber,
             @ApiParam(value = "Page size") @PathVariable int pageSize,
-            @ApiParam(value = "Sort information by parameter") @PathVariable(required = false) String sortBy
+            @ApiParam(value = "Sort information by parameter") @RequestParam(required = false) @PathVariable(required = false) String sortBy
     ) {
         Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
         Page<ProgramGetDto> page = new PageImpl<>(programs

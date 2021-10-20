@@ -48,6 +48,9 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public Page<Program> getPrograms(int pageNumber, int sizeOfPage,String sortBy) {
+        if(sortBy == null){
+            sortBy = "name";
+        }
         Pageable pageable = PageRequest.of(pageNumber, sizeOfPage, Sort.by(Sort.Order.asc(sortBy)));
         Page<Program> result = programRepository.findAll(pageable);
         log.info("IN getAllPages: It was found - {} program pages", result.getTotalPages());
@@ -137,6 +140,9 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public ProgramPageResponse fromPage(Page<ProgramGetDto> programPage, List<ProgramGetDto> programs, String sortedBy) {
         ProgramPageResponse response = modelMapper.map(programPage,ProgramPageResponse.class);
+        if(sortedBy == null){
+            sortedBy = "name";
+        }
         response.setPrograms(programs);
         response.setSortedBy(sortedBy);
         return response;

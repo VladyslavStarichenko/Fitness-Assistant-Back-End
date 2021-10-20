@@ -103,8 +103,7 @@ public class UserServiceImpl implements UserService {
             userToUpdate.setAge(userDto.getAge());
             userToUpdate.setEmail(userDto.getEmail());
             userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            userToUpdate.setLastName(userDto.getLastName());
-            userToUpdate.setFirstName(userDto.getFirstName());
+            userToUpdate.setWeight(userDto.getWeight());
             userRepository.save(userToUpdate);
             log.info("IN updateUser - user with id: {} successfully updated", id);
             return userToUpdate;

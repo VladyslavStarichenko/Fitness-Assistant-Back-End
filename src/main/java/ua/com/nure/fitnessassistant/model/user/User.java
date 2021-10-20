@@ -35,13 +35,13 @@ public class User extends BaseEntity {
     private String userName;
 
 
-    @Column(name = "first_name")
-    @Size(min = 2,message = "Use your full version of Name please")
-    private String firstName;
-
-    @Column(name = "last_name")
-    @Size(min = 2,message = "Use your full version of Name please")
-    private String lastName;
+//    @Column(name = "first_name")
+//    @Size(min = 2,message = "Use your full version of Name please")
+//    private String firstName;
+//
+//    @Column(name = "last_name")
+//    @Size(min = 2,message = "Use your full version of Name please")
+//    private String lastName;
 
 
     @Pattern(regexp = "\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
@@ -57,6 +57,9 @@ public class User extends BaseEntity {
 
     @Column(name = "age")
     private Integer age;
+
+    @Column(name = "weight")
+    private Integer weight;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "goal")
@@ -74,19 +77,5 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "created_by")
     private Set<Program> programs = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", mail='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", age=" + age +
-                ", goal=" + goal +
-                ", roles=" + roles +
-                ", programs=" + programs +
-                '}';
-    }
+
 }

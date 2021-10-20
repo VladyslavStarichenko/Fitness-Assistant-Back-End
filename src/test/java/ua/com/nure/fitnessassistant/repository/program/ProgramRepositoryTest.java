@@ -57,8 +57,7 @@ class ProgramRepositoryTest {
                 .build();
 
         User user = User.builder()
-                .firstName("Vlad")
-                .lastName("Starichenko")
+                .weight(80)
                 .userName("goldsilver")
                 .email("test@nure.ua")
                 .password("test")

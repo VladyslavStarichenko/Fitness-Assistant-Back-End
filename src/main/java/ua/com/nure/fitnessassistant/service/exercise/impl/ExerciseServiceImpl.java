@@ -49,6 +49,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public Page<Exercise> getAllExercises(int pageNumber, int sizeOfPage, String sortBy) {
+        if(sortBy == null){
+            sortBy = "name";
+        }
         Pageable pageable = PageRequest.of(pageNumber, sizeOfPage, Sort.by(Sort.Order.asc(sortBy)));
         Page<Exercise> result = exerciseRepository.findAll(pageable);
         log.info("IN getAllExercises: It was found - {} exercise pages", result.getTotalPages());
@@ -125,6 +128,9 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExercisePageResponse fromExercisePage(Page<ExerciseGetDto> page, Set<String> names, String sortedBy) {
         ExercisePageResponse exercisePageResponse = modelMapper.map(page, ExercisePageResponse.class);
         exercisePageResponse.setExercises(names);
+        if(sortedBy == null){
+           sortedBy = "name";
+        }
         exercisePageResponse.setSortedBy(sortedBy);
         return exercisePageResponse;
     }

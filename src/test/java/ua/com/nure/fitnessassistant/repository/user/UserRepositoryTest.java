@@ -37,8 +37,7 @@ class UserRepositoryTest {
                 .build();
         roles.add(role);
         User user = User.builder()
-                .firstName("Vlad")
-                .lastName("Starichenko")
+                .weight(80)
                 .userName("goldsilver")
                 .email("test@nure.ua")
                 .password("test")
@@ -62,8 +61,7 @@ class UserRepositoryTest {
                 .build();
 
         User user = User.builder()
-                .firstName("Vlad")
-                .lastName("Starichenko")
+                .weight(80)
                 .userName("goldsilver")
                 .email("test@nure.ua")
                 .password("test")

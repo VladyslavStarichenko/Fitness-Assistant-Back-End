@@ -9,12 +9,10 @@ import ua.com.nure.fitnessassistant.model.user.User;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CUUserDto {
 
-
     private String username;
-    private String firstName;
-    private String lastName;
     private String email;
     private Integer age;
+    private Integer weight;
     private Goal goal;
     private String password;
 
@@ -22,12 +20,11 @@ public class CUUserDto {
     public User toUser(){
         User user = new User();
         user.setUserName(username);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
         user.setEmail(email);
         user.setAge(age);
         user.setGoal(goal);
         user.setPassword(password);
+        user.setWeight(weight);
         return user;
     }
 
