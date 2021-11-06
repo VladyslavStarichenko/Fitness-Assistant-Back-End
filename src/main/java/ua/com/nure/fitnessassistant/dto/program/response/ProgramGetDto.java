@@ -9,6 +9,8 @@ public class ProgramGetDto {
 
     private String name;
     private String created_by;
+    private String programType;
+    private boolean isPublic;
     private Set<String> exercises;
 
 }

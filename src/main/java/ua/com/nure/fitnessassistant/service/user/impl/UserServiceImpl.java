@@ -13,9 +13,11 @@ import ua.com.nure.fitnessassistant.dto.user.request.CUUserDto;
 import ua.com.nure.fitnessassistant.dto.user.response.UserDto;
 import ua.com.nure.fitnessassistant.dto.user.response.UserPageResponse;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
+import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.program.ProgramRepository;
 import ua.com.nure.fitnessassistant.repository.user.UserRepository;
+import ua.com.nure.fitnessassistant.security.service.UserServiceSCRT;
 import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 import ua.com.nure.fitnessassistant.service.user.UserService;
 
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final ProgramRepository programRepository;
 
 
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, ProgramServiceImpl programServiceImpl, BCryptPasswordEncoder passwordEncoder, ProgramRepository programRepository) {
         this.userRepository = userRepository;
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
         this.programServiceImpl = programServiceImpl;
         this.passwordEncoder = passwordEncoder;
         this.programRepository = programRepository;
+
     }
 
 
@@ -92,6 +96,9 @@ public class UserServiceImpl implements UserService {
                     HttpStatus.NOT_FOUND);
         }
     }
+
+
+
 
     @Override
     public User updateUser(UUID id, CUUserDto userDto) {

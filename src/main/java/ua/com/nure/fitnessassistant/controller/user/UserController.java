@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ua.com.nure.fitnessassistant.dto.program.request.ProgramAddDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramGetDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramPageResponse;
 import ua.com.nure.fitnessassistant.dto.user.request.CUUserDto;
@@ -26,6 +27,7 @@ import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 import ua.com.nure.fitnessassistant.service.user.impl.UserServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -108,23 +110,25 @@ public class UserController {
         }
 
 
-        Set<Program> programsSet = this.programRepository.getMyPrograms(loggedInUser.getUserName());
-
-
-        Page<ProgramGetDto> page = new PageImpl<>(programsSet
+        Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
+        Page<ProgramGetDto> page = new PageImpl<>(programs
                 .stream()
                 .map(programServiceImpl::fromProgram)
                 .collect(Collectors.toList()));
-
         List<ProgramGetDto> programsList = page.toList();
-        ProgramPageResponse response = programServiceImpl.fromPage(page, programsList, sortBy);
+        List<ProgramGetDto> programGetDtoList = programsList.stream()
+                .filter(p -> p.getCreated_by().equals(loggedInUser.getUserName()))
+                .collect(Collectors.toList());
+        ProgramPageResponse response = programServiceImpl.fromPage(page, programGetDtoList, sortBy);
         response.setPageNumber(pageNumber);
         response.setPageSize(pageSize);
-        response.setTotalElements(programsSet.size());
-        response.setTotalPages(programsSet.size() / pageSize);
+        response.setTotalElements((int) programs.getTotalElements());
+        response.setTotalPages(programs.getTotalPages());
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
+
+
 
     @ApiOperation(value = "Get user by id")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

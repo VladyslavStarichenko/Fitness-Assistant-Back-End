@@ -12,12 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import ua.com.nure.fitnessassistant.dto.exercise.request.AssignExerciseDto;
+import ua.com.nure.fitnessassistant.dto.program.request.ProgramAddDto;
 import ua.com.nure.fitnessassistant.dto.program.request.ProgramCreateDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramGetDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramPageResponse;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
 import ua.com.nure.fitnessassistant.model.exercise.Exercise;
 import ua.com.nure.fitnessassistant.model.program.Program;
+import ua.com.nure.fitnessassistant.model.program.ProgramType;
 import ua.com.nure.fitnessassistant.model.user.Status;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.program.ProgramRepository;
@@ -27,7 +30,6 @@ import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -78,7 +80,11 @@ public class ProgramController {
                 .map(programServiceImpl::fromProgram)
                 .collect(Collectors.toList()));
         List<ProgramGetDto> programsList = page.toList();
-        ProgramPageResponse response = programServiceImpl.fromPage(page, programsList, sortBy);
+
+        List<ProgramGetDto> resultList = programsList.stream()
+                .filter(ProgramGetDto::isPublic)
+                .collect(Collectors.toList());
+        ProgramPageResponse response = programServiceImpl.fromPage(page, resultList, sortBy);
         response.setPageNumber(pageNumber);
         response.setPageSize(pageSize);
         response.setTotalElements((int) programs.getTotalElements());
@@ -94,42 +100,82 @@ public class ProgramController {
             @ApiParam(value = "Page size") @PathVariable int pageSize,
             @ApiParam(value = "Sort information by parameter") @PathVariable String sortBy
     ) {
-        Set<Program> programsSet = this.programRepository.getMyPrograms(userName);
-        Page<ProgramGetDto> page = getProgramGetDtoPage(programsSet);
-        List<ProgramGetDto> programsList = page.toList();
-        ProgramPageResponse response = programServiceImpl.fromPage(page, programsList, sortBy);
-        response.setPageNumber(pageNumber);
-        response.setPageSize(pageSize);
-        response.setTotalElements(programsSet.size());
-        response.setTotalPages(programsSet.size() / pageSize);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    private Page<ProgramGetDto> getProgramGetDtoPage(Set<Program> programsSet) {
-        return new PageImpl<>(programsSet
+        Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
+        Page<ProgramGetDto> page = new PageImpl<>(programs
                 .stream()
                 .map(programServiceImpl::fromProgram)
                 .collect(Collectors.toList()));
+        List<ProgramGetDto> programsList = page.toList();
+        List<ProgramGetDto> resultList = programsList.stream()
+                .filter(p -> p.getCreated_by().equals(userName))
+                .filter(ProgramGetDto::isPublic)
+        .collect(Collectors.toList());
+        ProgramPageResponse response = programServiceImpl.fromPage(page, resultList, sortBy);
+        response.setPageNumber(pageNumber);
+        response.setPageSize(pageSize);
+        response.setTotalElements(resultList.size());
+        response.setTotalPages(resultList.size()/pageSize);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Create new program")
     @PostMapping
     public ResponseEntity<ProgramGetDto> createProgram(@ApiParam(value = "Program object to create") @RequestBody ProgramCreateDto programCreateDto) {
+
         Program program = new Program();
         program.setName(programCreateDto.getName());
-        program.setCreated_by(this.userServiceSCRT.getCurrentLoggedInUser());
+        program.setCreated_by(this.userServiceSCRT.getCurrentLoggedInUser().getUserName());
+        program.setProgramType(ProgramType.valueOf(programCreateDto.getProgramType()));
         program.setStatus(Status.ACTIVE);
-        this.programServiceImpl.createProgram(program);
+        program.setPublic(programCreateDto.isPublic());
+        this.programServiceImpl.createProgram(program, userServiceSCRT.getCurrentLoggedInUser());
         ProgramGetDto programGetDto = programServiceImpl.fromProgram(program);
         return new ResponseEntity<>(programGetDto, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Add program")
+    @PostMapping ("addProgramToList")
+    public ResponseEntity<ProgramGetDto> addProgram(@ApiParam(value = "Program object to create") @RequestBody ProgramAddDto programAddDto) {
+
+        Optional<Program> program = programRepository.findProgramByNameAndCreatedBy(programAddDto.getName(), programAddDto.getAuthor());
+
+        if(program.isPresent()){
+            Program program1 = program.get();
+            programServiceImpl.addProgramToList(program1,userServiceSCRT.getCurrentLoggedInUser());
+            ProgramGetDto programGetDto = programServiceImpl.fromProgram(program.get());
+            return new ResponseEntity<>(programGetDto, HttpStatus.CREATED);
+        }else {
+            throw new CustomException("Faild to add Programm", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @ApiOperation(value = "Remove program")
+    @PostMapping ("removeProgramFromList")
+    public ResponseEntity<ProgramGetDto> removeProgram(@ApiParam(value = "Program object to create") @RequestBody ProgramAddDto programAddDto) {
+
+        Optional<Program> program = programRepository.findProgramByNameAndCreatedBy(programAddDto.getName(), programAddDto.getAuthor());
+
+        if(program.isPresent()){
+            Program program1 = program.get();
+            programServiceImpl.removeProgramFromList(program1,userServiceSCRT.getCurrentLoggedInUser());
+            ProgramGetDto programGetDto = programServiceImpl.fromProgram(program.get());
+            return new ResponseEntity<>(programGetDto, HttpStatus.CREATED);
+        }else {
+            throw new CustomException("Faild to add Programm", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+
     @ApiOperation(value = "Add exercise to the program")
-    @PutMapping("add/{programName}/exercises/{exerciseName}")
+    @PutMapping("add/{programName}/exercises/")
     ResponseEntity<ProgramGetDto> AddExercise(
-            @ApiParam(value = "Program name to add exercise") @PathVariable String programName,
-            @ApiParam(value = "Exercise to add") @PathVariable String exerciseName
-    ) {
+            @PathVariable String programName,
+            @RequestBody AssignExerciseDto exerciseDto
+            ) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         Optional<Program> programDb = programRepository.findProgramByNameAndCreatedBy(programName, loggedInUser.getUserName());
         if (!programDb.isPresent()) {
@@ -137,15 +183,19 @@ public class ProgramController {
         }
 
         Program program = programDb.get();
-        if (!program.getCreated_by().getUserName().equals(loggedInUser.getUserName())) {
+        if (!program.getCreated_by().equals(loggedInUser.getUserName())) {
             throw new CustomException("You're not allowed to change this program", HttpStatus.FORBIDDEN);
         }
-        Exercise exerciseDb = exerciseServiceImpl.findExerciseByName(exerciseName);
 
-        program.addExercise(exerciseDb);
-        programRepository.save(program);
-        return ResponseEntity.ok().body(programServiceImpl.fromProgram(program));
+        exerciseDto.getExercises()
+                .forEach(exercise -> {
+                    Exercise exerciseDb = exerciseServiceImpl.findExerciseByName(exercise);
+                    program.addExercise(exerciseDb);
+                });
+        return ResponseEntity.ok().body(programServiceImpl.fromProgram(programRepository.save(program)));
     }
+
+
 
     @ApiOperation(value = "Remove exercise from the program")
     @PutMapping("remove/{programName}/exercises/{exerciseName}")
@@ -159,7 +209,7 @@ public class ProgramController {
             throw new CustomException("There is no program found with requested data", HttpStatus.NOT_FOUND);
         }
         Program program = programDb.get();
-        if (!program.getCreated_by().getUserName().equals(loggedInUser.getUserName())) {
+        if (!program.getCreated_by().equals(loggedInUser.getUserName())) {
             throw new CustomException("You're not allowed to change this program", HttpStatus.FORBIDDEN);
         }
         Exercise exerciseDb = exerciseServiceImpl.findExerciseByName(exerciseName);
@@ -177,6 +227,17 @@ public class ProgramController {
     ) {
         User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
         Program program = programServiceImpl.updateProgram(programName, newProgramName, loggedInUser);
+        return new ResponseEntity<>(programServiceImpl.fromProgram(program), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Make program private")
+    @PutMapping("update/{programName}/public/{isPublic}")
+    ResponseEntity<ProgramGetDto> updatePublic(
+            @ApiParam(value = "Program name to update") @PathVariable String programName,
+            @ApiParam(value = "New program name") @PathVariable Boolean isPublic
+    ) {
+        User loggedInUser = this.userServiceSCRT.getCurrentLoggedInUser();
+        Program program = programServiceImpl.updatePublic(programName, isPublic, loggedInUser);
         return new ResponseEntity<>(programServiceImpl.fromProgram(program), HttpStatus.OK);
     }
 

@@ -1,7 +1,6 @@
 package ua.com.nure.fitnessassistant.service.program;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramGetDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramPageResponse;
 import ua.com.nure.fitnessassistant.model.program.Program;
@@ -12,7 +11,8 @@ import java.util.List;
 
 public interface ProgramService {
 
-    Program createProgram (Program program);
+    Program createProgram (Program program, User user);
+
 
     Page<Program> getPrograms(int pageNumber, int sizeOfPage,String sortBy);
 

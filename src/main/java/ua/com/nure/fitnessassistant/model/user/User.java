@@ -34,16 +34,6 @@ public class User extends BaseEntity {
     @Size(min = 2,message = "Username should be unique and with length more then 2")
     private String userName;
 
-
-//    @Column(name = "first_name")
-//    @Size(min = 2,message = "Use your full version of Name please")
-//    private String firstName;
-//
-//    @Column(name = "last_name")
-//    @Size(min = 2,message = "Use your full version of Name please")
-//    private String lastName;
-
-
     @Pattern(regexp = "\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
             message = "Mail should be in format: example (myemail@address.com)")
     @Column(name = "mail")
@@ -73,9 +63,14 @@ public class User extends BaseEntity {
     private List<Role> roles;
 
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "created_by")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_program",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "program_id",referencedColumnName = "id")})
     private Set<Program> programs = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "created_by")
+//    private Set<Program> programs = new HashSet<>();
 
 
 }

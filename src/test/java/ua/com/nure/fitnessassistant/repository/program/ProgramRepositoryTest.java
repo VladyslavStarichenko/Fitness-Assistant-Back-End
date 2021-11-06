@@ -69,7 +69,7 @@ class ProgramRepositoryTest {
         Program program = new Program();
         program.setName(name);
         programRepository.save(program);
-        when(program.getCreated_by()).thenReturn(user);
+        when(program.getCreated_by()).thenReturn(user.getUserName());
         //when
 
     }

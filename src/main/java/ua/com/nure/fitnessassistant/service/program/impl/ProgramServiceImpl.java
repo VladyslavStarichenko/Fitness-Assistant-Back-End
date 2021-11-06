@@ -16,10 +16,12 @@ import ua.com.nure.fitnessassistant.model.exercise.Exercise;
 import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.program.ProgramRepository;
+import ua.com.nure.fitnessassistant.repository.user.UserRepository;
 import ua.com.nure.fitnessassistant.service.program.ProgramService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -27,24 +29,44 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProgramServiceImpl implements ProgramService {
 
-
     private final ProgramRepository programRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
 
     @Autowired
-    public ProgramServiceImpl(ProgramRepository programRepository, ModelMapper modelMapper) {
+    public ProgramServiceImpl(ProgramRepository programRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.programRepository = programRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
 
+
     }
-
-
     @Override
-    public Program createProgram(Program program) {
+    public Program createProgram(Program program, User user) {
         log.info("Program {} was created by user: {}",program,program.getCreated_by());
-        return this.programRepository.save(program);
+        Program programDb = this.programRepository.save(program);
+        addProgramToList(program,user);
+        return programDb ;
     }
+    public User addProgramToList (Program program, User user){
+        Set<Program> programs = user.getPrograms();
+        System.out.println(programs.toString());
+        programs.add(program);
+        System.out.println(programs.toString());
+        userRepository.save(user);
+        log.info("IN updateUser - user's program List with id: {} successfully added", user.getId());
+        return user;
+    }
+
+    public User removeProgramFromList (Program program,User user){
+        Set<Program> programs = user.getPrograms();
+        programs.remove(program);
+        userRepository.save(user);
+        log.info("IN updateUser - user's program List with id: {} successfully deleted", user.getId());
+        return user;
+    }
+
 
     @Override
     public Page<Program> getPrograms(int pageNumber, int sizeOfPage,String sortBy) {
@@ -56,6 +78,7 @@ public class ProgramServiceImpl implements ProgramService {
         log.info("IN getAllPages: It was found - {} program pages", result.getTotalPages());
         return result;
     }
+
 
     @Override
     public Program findByProgramByName(String name) {
@@ -92,7 +115,7 @@ public class ProgramServiceImpl implements ProgramService {
             throw new CustomException("There is no program with name:" + name,
                     HttpStatus.NOT_FOUND);
         }
-        if(!programDb.get().getCreated_by().getUserName().equals(user.getUserName())){
+        if(!programDb.get().getCreated_by().equals(user.getUserName())){
             throw new CustomException("You're not allowed to change this program",
                     HttpStatus.FORBIDDEN);
         }
@@ -111,7 +134,7 @@ public class ProgramServiceImpl implements ProgramService {
         }
 
         Program programToUpdate = programDb.get();
-        if(!programToUpdate.getCreated_by().getUserName().equals(user.getUserName())){
+        if(!programToUpdate.getCreated_by().equals(user.getUserName())){
             throw new CustomException("You're not allowed to change this program",
                     HttpStatus.FORBIDDEN);
         }
@@ -119,7 +142,34 @@ public class ProgramServiceImpl implements ProgramService {
         program.setId(programToUpdate.getId());
         program.setName(name);
         program.setStatus(programToUpdate.getStatus());
-        program.setCreated_by(user);
+        program.setProgramType(programToUpdate.getProgramType());
+        program.setCreated_by(user.getUserName());
+        program.setPublic(programToUpdate.isPublic());
+        program.setCreatedAt(programToUpdate.getCreatedAt());
+        program.setExercises(programToUpdate.getExercises());
+        return programRepository.save(program);
+    }
+
+    public Program updatePublic(String programName, boolean isPublic, User user){
+        Optional<Program> programDb = this.programRepository.findProgramByName(programName);
+        if (!programDb.isPresent()) {
+            log.warn("Program with name: {} wasn't found", programName);
+            throw new CustomException("There is no program with name:" + programName + " to update",
+                    HttpStatus.NOT_FOUND);
+        }
+
+        Program programToUpdate = programDb.get();
+        if(!programToUpdate.getCreated_by().equals(user.getUserName())){
+            throw new CustomException("You're not allowed to change this program",
+                    HttpStatus.FORBIDDEN);
+        }
+        Program program = new Program();
+        program.setId(programToUpdate.getId());
+        program.setName(programToUpdate.getName());
+        program.setStatus(programToUpdate.getStatus());
+        program.setProgramType(programToUpdate.getProgramType());
+        program.setCreated_by(user.getUserName());
+        program.setPublic(isPublic);
         program.setCreatedAt(programToUpdate.getCreatedAt());
         program.setExercises(programToUpdate.getExercises());
         return programRepository.save(program);
@@ -129,7 +179,9 @@ public class ProgramServiceImpl implements ProgramService {
     public ProgramGetDto fromProgram(Program program) {
         ProgramGetDto programGetDto = modelMapper.map(program,ProgramGetDto.class);
         programGetDto.setName(program.getName());
-        programGetDto.setCreated_by(program.getCreated_by().getUserName());
+        programGetDto.setProgramType(String.valueOf(program.getProgramType()));
+        programGetDto.setCreated_by(program.getCreated_by());
+        programGetDto.setPublic(program.isPublic());
         programGetDto.setExercises(program.getExercises()
                 .stream()
                 .map(Exercise::getName)
@@ -143,6 +195,7 @@ public class ProgramServiceImpl implements ProgramService {
         if(sortedBy == null){
             sortedBy = "name";
         }
+        response.setPageSize(programPage.getSize());
         response.setPrograms(programs);
         response.setSortedBy(sortedBy);
         return response;
