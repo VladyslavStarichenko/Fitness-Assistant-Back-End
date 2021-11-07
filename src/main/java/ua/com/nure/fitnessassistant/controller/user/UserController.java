@@ -116,10 +116,8 @@ public class UserController {
                 .map(programServiceImpl::fromProgram)
                 .collect(Collectors.toList()));
         List<ProgramGetDto> programsList = page.toList();
-        List<ProgramGetDto> programGetDtoList = programsList.stream()
-                .filter(p -> p.getCreated_by().equals(loggedInUser.getUserName()))
-                .collect(Collectors.toList());
-        ProgramPageResponse response = programServiceImpl.fromPage(page, programGetDtoList, sortBy);
+
+        ProgramPageResponse response = programServiceImpl.fromPage(page, programsList, sortBy);
         response.setPageNumber(pageNumber);
         response.setPageSize(pageSize);
         response.setTotalElements((int) programs.getTotalElements());
