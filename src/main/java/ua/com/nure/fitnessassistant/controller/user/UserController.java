@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/")
 @Api(value = "Operations with users")
-@CrossOrigin(origins = "http://localhost:3000")
+
 public class UserController {
 
 
