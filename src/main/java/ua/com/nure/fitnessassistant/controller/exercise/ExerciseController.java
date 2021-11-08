@@ -29,7 +29,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/exercise/")
 @Api(value = "Operations with exercises")
-@CrossOrigin
+@CrossOrigin( origins = "http://localhost:3000",
+        methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 public class ExerciseController {
 
     private final ExerciseServiceImpl exerciseServiceImpl;

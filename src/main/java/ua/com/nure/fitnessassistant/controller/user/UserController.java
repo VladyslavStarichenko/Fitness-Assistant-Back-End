@@ -27,8 +27,6 @@ import ua.com.nure.fitnessassistant.service.program.impl.ProgramServiceImpl;
 import ua.com.nure.fitnessassistant.service.user.impl.UserServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/")
 @Api(value = "Operations with users")
-@CrossOrigin
+@CrossOrigin( origins = "http://localhost:3000",
+        methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 public class UserController {
 
 
@@ -44,16 +43,14 @@ public class UserController {
     private final UserServiceSCRT userServiceSCRT;
     private final PasswordEncoder passwordEncoder;
     private final ProgramServiceImpl programServiceImpl;
-    private final ProgramRepository programRepository;
 
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl, UserServiceSCRT userServiceSCRT, BCryptPasswordEncoder passwordEncoder, ProgramServiceImpl programServiceImpl, ProgramRepository programRepository) {
+    public UserController(UserServiceImpl userServiceImpl, UserServiceSCRT userServiceSCRT, BCryptPasswordEncoder passwordEncoder, ProgramServiceImpl programServiceImpl) {
         this.userServiceImpl = userServiceImpl;
         this.userServiceSCRT = userServiceSCRT;
         this.passwordEncoder = passwordEncoder;
         this.programServiceImpl = programServiceImpl;
-        this.programRepository = programRepository;
     }
 
 
@@ -66,7 +63,6 @@ public class UserController {
         }
         UserDto result = this.userServiceImpl.fromUser(loggedInUser);
         return ResponseEntity.ok().body(result);
-
     }
 
 
@@ -80,7 +76,6 @@ public class UserController {
         User user = this.userServiceImpl.updateUser(loggedInUser.getId(), userDto);
         UserDto result = this.userServiceImpl.fromUser(user);
         return ResponseEntity.ok().body(result);
-
     }
 
     @ApiOperation(value = "Delete current logged in user account")
@@ -125,7 +120,6 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
-
 
 
     @ApiOperation(value = "Get user by id")
