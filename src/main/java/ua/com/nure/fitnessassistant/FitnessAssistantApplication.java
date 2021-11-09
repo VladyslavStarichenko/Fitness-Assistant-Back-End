@@ -27,7 +27,7 @@ public class FitnessAssistantApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				String urls = env.getProperty("cors.urls");
-				CorsRegistration reg = registry.addMapping("/api/**");
+				CorsRegistration reg = registry.addMapping("/**");
 				for(String url: urls.split(",")) {
 					reg.allowedOrigins(url);
 				}
