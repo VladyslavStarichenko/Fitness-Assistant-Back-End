@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/exercise/")
 @Api(value = "Operations with exercises")
-
+@CrossOrigin()
 public class ExerciseController {
 
     private final ExerciseServiceImpl exerciseServiceImpl;
