@@ -14,7 +14,7 @@ import ua.com.nure.fitnessassistant.security.service.UserServiceSCRT;
 import java.util.Map;
 
 
-@CrossOrigin( origins = "http://localhost:3000",
+@CrossOrigin(origins = "*",
 methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 @RestController
 @Api(value = "Authentication operations (login, sign up)")
