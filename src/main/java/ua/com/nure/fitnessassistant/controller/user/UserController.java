@@ -34,8 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/")
 @Api(value = "Operations with users")
-@CrossOrigin( origins = "*",
-        methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
+@CrossOrigin
 public class UserController {
 
 
