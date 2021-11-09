@@ -14,24 +14,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 public class FitnessAssistantApplication {
 
-	@Autowired
-	private Environment env;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(FitnessAssistantApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				String urls = env.getProperty("cors.urls");
-				CorsRegistration reg = registry.addMapping("/**");
-				for(String url: urls.split(",")) {
-					reg.allowedOrigins(url);
-				}
-			}
-		};
-	}
+
 }
