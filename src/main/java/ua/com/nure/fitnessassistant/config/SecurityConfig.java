@@ -16,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ua.com.nure.fitnessassistant.security.jwt.JwtConfigurer;
 import ua.com.nure.fitnessassistant.security.jwt.JwtTokenProvider;
 
@@ -59,10 +62,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
 
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+
 
     }
 
+    @Configuration
+    public class MyConfiguration {
+
+        @Bean
+        public WebMvcConfigurer corsConfigurer() {
+            return new WebMvcConfigurerAdapter() {
+                @Override
+                public void addCorsMappings(CorsRegistry registry) {
+                    registry.addMapping("/**")
+                            .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
+                }
+            };
+        }
+    }
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs",
