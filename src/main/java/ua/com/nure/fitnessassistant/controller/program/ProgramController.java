@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/program/")
 @Api(value = "Operations with programs")
-@CrossOrigin(origins = "http://localhost:3000",
+@CrossOrigin(origins = "*",
         methods = {RequestMethod.GET,RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.POST},
         allowCredentials = "true",maxAge = 3600)
 public class ProgramController {
