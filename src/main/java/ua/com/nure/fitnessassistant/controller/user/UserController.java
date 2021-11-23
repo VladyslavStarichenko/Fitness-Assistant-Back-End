@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/")
 @Api(value = "Operations with users")
-@CrossOrigin(origins = "http://localhost:3000",
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8000"},
         methods = {RequestMethod.GET,RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.POST},
         allowCredentials = "true",maxAge = 3600, allowedHeaders = "*")
 public class UserController {
