@@ -17,6 +17,7 @@ import java.util.Map;
 @RestController
 @Api(value = "Authentication operations (login, sign up)")
 @RequestMapping(value = "/api/v1/auth/")
+@CrossOrigin
 public class AuthenticationController {
 
 

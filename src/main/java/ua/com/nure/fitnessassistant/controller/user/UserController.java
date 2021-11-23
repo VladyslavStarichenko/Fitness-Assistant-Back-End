@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Api(value = "Operations with users")
 @CrossOrigin(origins = "*",
         methods = {RequestMethod.GET,RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.POST},
-        allowCredentials = "true",maxAge = 3600)
+        allowCredentials = "true",maxAge = 3600, allowedHeaders = "*")
 public class UserController {
 
 
