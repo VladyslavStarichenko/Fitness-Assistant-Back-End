@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramGetDto;
 import ua.com.nure.fitnessassistant.dto.program.response.ProgramPageResponse;
 import ua.com.nure.fitnessassistant.exeption.CustomException;
-import ua.com.nure.fitnessassistant.model.exercise.Exercise;
 import ua.com.nure.fitnessassistant.model.program.Program;
 import ua.com.nure.fitnessassistant.model.user.User;
 import ua.com.nure.fitnessassistant.repository.program.ProgramRepository;
 import ua.com.nure.fitnessassistant.repository.user.UserRepository;
+import ua.com.nure.fitnessassistant.service.exercise.impl.ExerciseServiceImpl;
 import ua.com.nure.fitnessassistant.service.program.ProgramService;
 
 import java.util.List;
@@ -32,15 +32,17 @@ public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final ExerciseServiceImpl exerciseServiceImpl;
 
 
     @Autowired
-    public ProgramServiceImpl(ProgramRepository programRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public ProgramServiceImpl(ProgramRepository programRepository, UserRepository userRepository, ModelMapper modelMapper, ExerciseServiceImpl exerciseServiceImpl) {
         this.programRepository = programRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
 
 
+        this.exerciseServiceImpl = exerciseServiceImpl;
     }
     @Override
     public Program createProgram(Program program, User user) {
@@ -187,8 +189,14 @@ public class ProgramServiceImpl implements ProgramService {
         programGetDto.setDescription(program.getDescription());
         programGetDto.setExercises(program.getExercises()
                 .stream()
-                .map(Exercise::getName)
+                .map(exerciseServiceImpl::fromExercise)
                 .collect(Collectors.toSet()));
+
+        Integer totalTime = program.getExercises().stream()
+                .map(el -> el.getRepeats() * el.getRest() + el.getRepeats() * el.getTimeToDoOneRep())
+                .reduce(0, Integer::sum);
+
+        programGetDto.setFullTime(totalTime);
         return programGetDto;
     }
 

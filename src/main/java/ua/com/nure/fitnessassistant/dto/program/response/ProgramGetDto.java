@@ -1,6 +1,8 @@
 package ua.com.nure.fitnessassistant.dto.program.response;
 
 import lombok.Data;
+import ua.com.nure.fitnessassistant.dto.exercise.response.ExerciseGetDto;
+
 import java.util.Set;
 
 
@@ -11,7 +13,8 @@ public class ProgramGetDto {
     private String created_by;
     private String programType;
     private boolean isPublic;
-    private Set<String> exercises;
+    private Set<ExerciseGetDto> exercises;
     private String description;
+    private Integer fullTime;
 
 }
