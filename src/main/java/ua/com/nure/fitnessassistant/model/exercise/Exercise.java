@@ -28,10 +28,19 @@ public class Exercise extends BaseEntity implements Serializable {
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Long id;
 
-
     @Column(name = "name")
     private String name;
 
+    private Integer repeats;
+
+    @Column(name ="rep_time")
+    private Integer timeToDoOneRep;
+
+    private String img;
+
+    private String description;
+
+    private Integer rest;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "exercises")

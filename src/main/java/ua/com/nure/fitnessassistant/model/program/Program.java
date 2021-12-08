@@ -61,6 +61,8 @@ public class Program extends BaseEntity implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean isPublic;
 
+    private String description;
+
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
     }

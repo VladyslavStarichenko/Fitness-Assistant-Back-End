@@ -18,12 +18,12 @@ import java.util.Optional;
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+
     private final UserRepository userRepository;
 
     @Autowired
-    public JwtUserDetailsService(UserService userService, UserRepository userRepository) {
-        this.userService = userService;
+    public JwtUserDetailsService( UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 

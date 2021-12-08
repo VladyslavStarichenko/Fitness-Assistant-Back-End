@@ -18,6 +18,7 @@ import ua.com.nure.fitnessassistant.repository.exercise.ExerciseRepository;
 
 import ua.com.nure.fitnessassistant.service.exercise.ExerciseService;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.List;
@@ -127,7 +128,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public ExercisePageResponse fromExercisePage(Page<ExerciseGetDto> page, Set<String> names, String sortedBy) {
         ExercisePageResponse exercisePageResponse = modelMapper.map(page, ExercisePageResponse.class);
-        exercisePageResponse.setExercises(names);
+        exercisePageResponse.setExercises(new HashSet<>(page.getContent()));
         if(sortedBy == null){
            sortedBy = "name";
         }

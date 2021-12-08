@@ -14,7 +14,6 @@ import java.util.Date;
 @MappedSuperclass
 @Getter
 @Setter
-
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseEntity {

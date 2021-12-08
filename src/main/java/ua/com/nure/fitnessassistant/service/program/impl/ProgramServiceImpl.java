@@ -145,6 +145,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setProgramType(programToUpdate.getProgramType());
         program.setCreated_by(user.getUserName());
         program.setPublic(programToUpdate.isPublic());
+        program.setDescription(programToUpdate.getDescription());
         program.setCreatedAt(programToUpdate.getCreatedAt());
         program.setExercises(programToUpdate.getExercises());
         return programRepository.save(program);
@@ -170,6 +171,7 @@ public class ProgramServiceImpl implements ProgramService {
         program.setProgramType(programToUpdate.getProgramType());
         program.setCreated_by(user.getUserName());
         program.setPublic(isPublic);
+        program.setDescription(program.getDescription());
         program.setCreatedAt(programToUpdate.getCreatedAt());
         program.setExercises(programToUpdate.getExercises());
         return programRepository.save(program);
@@ -182,6 +184,7 @@ public class ProgramServiceImpl implements ProgramService {
         programGetDto.setProgramType(String.valueOf(program.getProgramType()));
         programGetDto.setCreated_by(program.getCreated_by());
         programGetDto.setPublic(program.isPublic());
+        programGetDto.setDescription(program.getDescription());
         programGetDto.setExercises(program.getExercises()
                 .stream()
                 .map(Exercise::getName)

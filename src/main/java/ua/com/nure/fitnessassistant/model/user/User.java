@@ -40,8 +40,8 @@ public class User extends BaseEntity {
     private String email;
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-    message = "Password should contain at least one capital letter, one lowercase letter, special character," +
-            "length should be more or equals 8")
+            message = "Password should contain at least one capital letter, one lowercase letter, special character," +
+                    "length should be more or equals 8")
     @Column(name = "password")
     private String password;
 
@@ -68,6 +68,7 @@ public class User extends BaseEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "program_id",referencedColumnName = "id")})
     private Set<Program> programs = new HashSet<>();
+
 //    @JsonIgnore
 //    @OneToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, mappedBy = "created_by")
 //    private Set<Program> programs = new HashSet<>();

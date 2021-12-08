@@ -12,5 +12,6 @@ public class ProgramGetDto {
     private String programType;
     private boolean isPublic;
     private Set<String> exercises;
+    private String description;
 
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 @Data
 public class ExercisePageResponse {
 
-    private Set<String> exercises;
+    private Set<ExerciseGetDto> exercises;
     private int pageNumber;
     private int pageSize;
     private String sortedBy;

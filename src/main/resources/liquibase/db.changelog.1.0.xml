@@ -132,6 +132,24 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="rep_time" type="INT" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="rest" type="INT" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="repeats" type="INT" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(1000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="img" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="updated" type="TIMESTAMP" defaultValue="now()">
             </column>
 
@@ -164,6 +182,10 @@
             </column>
             <column name="created" type="TIMESTAMP" defaultValue="now()">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(1000)">
+                <constraints nullable="false" />
             </column>
 
             <column name="updated" type="TIMESTAMP" defaultValue="now()">
@@ -214,6 +236,7 @@
 
             <column name="program_id" type="BIGINT">
             </column>
+
         </createTable>
     </changeSet>
 
@@ -307,6 +330,11 @@
         <insert tableName="exercises">
             <column name="id" value="1"/>
             <column name="name" value="Barbell squat"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Hold a barbell across your upper back with an overhand grip – avoid resting it on your neck. Hug the bar into your traps to engage your upper back muscles.Take the weight of the bar and slowly squat down – head up, back straight, buns out" />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2018/04/barbell-squat-1.jpg" />
             <column name="status" value="ACTIVE"/>
         </insert>
 
@@ -314,127 +342,231 @@
             <column name="id" value="2"/>
             <column name="name" value="Frontal squat"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="A front squat is a squat that is performed while holding a barbell except, unlike with a back squat, the bar is held in front of the chest.This places more force on the upper body while still working the glutes, hamstrings, and hips." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2018/04/barbell-front-squat.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="3"/>
             <column name="name" value="Romanian deadlift"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The Romanian deadlift (RDL) is a traditional barbell lift used to develop the strength of the posterior chain muscles, including the erector spinae, gluteus maximus, hamstrings and adductors. When done correctly, the RDL is an effective exercise that helps strengthen both the core and the lower body with one move." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2018/04/barbell-romanian-deadlift.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="4"/>
             <column name="name" value="Good mornings"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="What Is the Good Morning Exercise? The good morning is a weightlifting exercise that activates muscle groups across your whole body. Perform good morning exercises by standing with your feet shoulder-width apart. Unrack a weighted barbell and rest it on your upper back using a similar bar position as a back squat." />
+            <column name="img" value="https://weighttraining.guide/wp-content/uploads/2021/03/Barbell-good-morning.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="5"/>
             <column name="name" value="Walking lunges"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Walking lunges are a variation on the static lunge exercise. Instead of standing back upright after performing a lunge on one leg, as you would in a static bodyweight lunge, you “walk” forward by lunging out with the other leg. Walking lunges strengthen the leg muscles as well as the core, hips, and glutes." />
+            <column name="img" value="https://www.burnthefatinnercircle.com/members/images/1768.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="6"/>
             <column name="name" value="Reverse lunge"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="What are reverse lunges? With a reverse lunge, you'll be stepping backward with one of your legs, says Tamir. You bend your back leg so your back knee will nearly touch the ground, and your front knee so your thigh is about parallel to the ground. Your front, planted leg is the one that will be working." />
+            <column name="img" value="https://www.burnthefatinnercircle.com/members/images/1768.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="7"/>
             <column name="name" value="Goblet squat"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The goblet squat is one of the most effective exercises to build lower body strength. The goblet squat is a lower body exercise in which you hold a dumbbell or kettlebell with both hands in front of your chest. Then, you squat while holding the dumbbell. Your elbows should come between your knees." />
+            <column name="img" value="https://global-uploads.webflow.com/5d1d0d3f53ced35a29dbe169/5fbc1c1889a1d8fc84f5808b_dumbbell-goblet-squat.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="8"/>
             <column name="name" value="Bulgarian split squat"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The Bulgarian split squat is a version of a single-leg squat where the back leg is elevated on a bench or a sturdy chair. As a single-leg, unilateral squat, the exercise places a greater focus on the quadriceps than other, similar lower-body compound movements." />
+            <column name="img" value="https://i.pinimg.com/originals/e5/8e/11/e58e114d80e341a5762626ae3d8e8c03.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="9"/>
             <column name="name" value="Leg curl"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The leg curl, also known as the hamstring curl, is an isolation exercise that targets the hamstring muscles.[1] The exercise involves flexing the lower leg against resistance towards the buttocks. There are three types of leg curls. There are seated leg curls, lying leg curls, and standing leg curls." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/dumbbell-leg-curl.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="10"/>
             <column name="name" value="Bench press"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Definition of bench press: a lift or exercise in which a weight is raised by extending the arms upward while lying on a bench. Other Words from bench press Example Sentences Learn More About bench press." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/dumbbell-leg-curl.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="11"/>
             <column name="name" value="Bent-over row"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Lift the bar from the rack, bend forward at the hips, and keep the back straight with a slight bend in the knees. Lower the bar towards the floor until the elbows are completely straight, and keep the back flat as the bar is pulled towards the belly button. Then slowly lower the bar to the starting position and repeat." />
+            <column name="img" value="https://weighttraining.guide/wp-content/uploads/2016/10/Bent-over-barbell-row.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="12"/>
             <column name="name" value="Chin-up"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Definition of chin-up: an exercise in which one hangs by the hands from a support (such as a horizontal bar) and pulls oneself up until the chin is level with the support specifically : such an exercise done with the palms facing inward — compare pull-up." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/pull-up.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="13"/>
             <column name="name" value="Incline flye"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Start with your back flat on an incline bench, which is lowered to 30 degrees. Start with your arms at chest level at your sides, elbows bent and pointing out. Slowly exhale and lift your arms above your chest. Inhale and slowly lower your arms to your sides to the starting position." />
+            <column name="img" value="https://weighttraining.guide/wp-content/uploads/2018/02/Incline-dumbbell-fly-resized.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="14"/>
             <column name="name" value="Diamond press-up"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The Diamond Push-up is a more difficult variation of the classic push-up, with your hands coming together to make a diamond shape. Popular in the army, this exercise helps build chest and abdominal muscles in addition to arm muscles" />
+            <column name="img" value="https://weighttraining.guide/wp-content/uploads/2017/07/diamond-push-up-resized.png" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="15"/>
             <column name="name" value="Overhead press"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The overhead press is set up by taking a barbell or other weight and putting it in a racking position. The weight is then pressed to overhead. The exercise can be performed sitting or standing; standing recruits more muscle groups to maintain balance and support the lift." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/seated-neutral-grip-dumbbell-overhead-press.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="16"/>
             <column name="name" value="Barbell high pull"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Hold the bar outside shoulder width and bend your knees and hips to lower it to just above your knees. Explosively extend your hips and knees while you pull the bar up to chest level. Think about spreading your elbows wide apart and pulling the bar back more so than high.." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/barbell-wide-grip-upright-row.jpg" />
         </insert>
-
 
         <insert tableName="exercises">
             <column name="id" value="17"/>
             <column name="name" value="Lateral raise"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The lateral raise is one of the best exercises for those looking to build shoulders like boulders. It's also a very simple movement: essentially you just raise weights to the sides and up to shoulder level, then lower them again – though naturally we have some far more detailed advice about perfect form to follow." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2018/04/dumbbell-lateral-raise.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="18"/>
             <column name="name" value="Dumbbell triceps extension"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Raise the dumbbells above your head until your arms are stretched out straight. Slowly lower the weights back behind your head, being careful not to flare your elbows out too much." />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2018/04/lying-one-arm-dumbbell-triceps-extension-1.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="19"/>
             <column name="name" value=" Barbell biceps curl"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="A weight training exercise intended to develop the biceps brachii's size, endurance or strength, in which a dumbbell or similar weighted object is held in the hand with the arm extended and lifted to complete flexion of the arm at the elbow or, when developing both biceps brachii, using a barbell to perform the same" />
+            <column name="img" value="https://fitnessvolt.com/wp-content/uploads/2019/04/barbell-curl-750x474.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="20"/>
             <column name="name" value="Dumbbell biceps curl"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Hold one dumbbell in each hand. Let your arms relax down at the sides of your body with palms facing forward. Keeping your upper arms stable and shoulders relaxed, bend at the elbow and lift the weights so that the dumbbells approach your shoulders." />
+            <column name="img" value="https://s3.amazonaws.com/prod.skimble/assets/2287274/image_iphone.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="21"/>
             <column name="name" value="Reverse-grip bent-over row"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="The reverse-grip bent-over row is a compound exercise used to build strength and size in both the lower and upper back." />
+            <column name="img" value="https://i.pinimg.com/736x/b3/a8/fe/b3a8fe83d3c38092a73f2b3e4efbacbb.jpg" />
         </insert>
 
         <insert tableName="exercises">
             <column name="id" value="22"/>
             <column name="name" value="Seated dumbbell overhead press"/>
             <column name="status" value="ACTIVE"/>
+            <column name="rep_time" value="1"/>
+            <column name="rest" value="1"/>
+            <column name="repeats" value="4"/>
+            <column name="description" value="Starting Position: Grasp the dumbbells in your hands and sit with your back against a back rest so that your head, shoulders and butt make contact with the bench. Place your feet firmly on the floor." />
+            <column name="img" value="https://weighttraining.guide/wp-content/uploads/2016/05/Dumbbell-Shoulder-Press-resized.png" />
         </insert>
     </changeSet>
 
@@ -446,6 +578,7 @@
             <column name="is_public" value="1"/>
             <column name="created_by" value="goldsilverTest1"/>
             <column name="status" value="ACTIVE"/>
+            <column name="description" value="Leg day is a mysterious day that most beginner lifters don't know about. The more expreienced lifters only include leg day for the simple fact that they don't want to be featured on the next 'never skip leg day'  meme"/>
         </insert>
 
         <insert tableName="programs">
@@ -455,6 +588,7 @@
             <column name="is_public" value="1"/>
             <column name="created_by" value="goldsilverTest1"/>
             <column name="status" value="ACTIVE"/>
+            <column name="description" value="For body builders and those interested in general muscular aesthetics, the chest muscles are the defining part of muscle mass. Powerlifters rely on them for the bench press to score the greatest lift."/>
         </insert>
 
         <insert tableName="programs">
@@ -464,6 +598,7 @@
             <column name="is_public" value="1"/>
             <column name="created_by" value="goldsilverTest1"/>
             <column name="status" value="ACTIVE"/>
+            <column name="description" value="These are the best back exercises to improve strength, athleticism and muscle definition."/>
         </insert>
     </changeSet>
 

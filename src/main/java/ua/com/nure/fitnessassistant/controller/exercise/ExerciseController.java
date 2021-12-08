@@ -51,6 +51,11 @@ public class ExerciseController {
         Exercise exercise = new Exercise();
         exercise.setName(createExerciseDto.getName());
         exercise.setStatus(Status.ACTIVE);
+        exercise.setDescription(createExerciseDto.getDescription());
+        exercise.setImg(createExerciseDto.getImg());
+        exercise.setRepeats(createExerciseDto.getRepeats());
+        exercise.setRest(createExerciseDto.getRest());
+        exercise.setTimeToDoOneRep(createExerciseDto.getTimeToDoOneRep());
         this.exerciseServiceImpl.createExercise(exercise);
         return ResponseEntity.ok().body(this.exerciseServiceImpl.fromExercise(exercise));
     }

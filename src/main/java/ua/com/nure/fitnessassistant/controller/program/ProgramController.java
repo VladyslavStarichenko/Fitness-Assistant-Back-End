@@ -128,9 +128,10 @@ public class ProgramController {
         Program program = new Program();
         program.setName(programCreateDto.getName());
         program.setCreated_by(this.userServiceSCRT.getCurrentLoggedInUser().getUserName());
-        program.setProgramType(ProgramType.valueOf(programCreateDto.getProgramType()));
+        program.setProgramType(programCreateDto.getProgramType());
         program.setStatus(Status.ACTIVE);
         program.setPublic(programCreateDto.isPublic());
+        program.setDescription(programCreateDto.getDescription());
         this.programServiceImpl.createProgram(program, userServiceSCRT.getCurrentLoggedInUser());
         ProgramGetDto programGetDto = programServiceImpl.fromProgram(program);
         return new ResponseEntity<>(programGetDto, HttpStatus.CREATED);
