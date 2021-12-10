@@ -14,7 +14,7 @@ public interface ProgramService {
     Program createProgram (Program program, User user);
 
 
-    Page<Program> getPrograms(int pageNumber, int sizeOfPage,String sortBy);
+    Page<Program> getProgramsByUser(int pageNumber, int sizeOfPage,String sortBy, String userName);
 
     Program findByProgramByName(String name);
 

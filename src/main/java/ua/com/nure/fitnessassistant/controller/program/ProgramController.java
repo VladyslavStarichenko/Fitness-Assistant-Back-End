@@ -76,7 +76,7 @@ public class ProgramController {
             @ApiParam(value = "Page size") @PathVariable int pageSize,
             @ApiParam(value = "Sort information by parameter") @RequestParam(required = false) @PathVariable(required = false) String sortBy
     ) {
-        Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
+        Page<Program> programs = this.programServiceImpl.getAllPrograms(pageNumber, pageSize, sortBy);
         Page<ProgramGetDto> page = new PageImpl<>(programs
                 .stream()
                 .map(programServiceImpl::fromProgram)
@@ -102,21 +102,18 @@ public class ProgramController {
             @ApiParam(value = "Page size") @PathVariable int pageSize,
             @ApiParam(value = "Sort information by parameter") @PathVariable String sortBy
     ) {
-        Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
+        Page<Program> programs = programServiceImpl.getProgramsByUser(pageNumber, pageSize, sortBy,userName);
         Page<ProgramGetDto> page = new PageImpl<>(programs
                 .stream()
                 .map(programServiceImpl::fromProgram)
                 .collect(Collectors.toList()));
         List<ProgramGetDto> programsList = page.toList();
-        List<ProgramGetDto> resultList = programsList.stream()
-                .filter(p -> p.getCreated_by().equals(userName))
-                .filter(ProgramGetDto::isPublic)
-        .collect(Collectors.toList());
-        ProgramPageResponse response = programServiceImpl.fromPage(page, resultList, sortBy);
+
+        ProgramPageResponse response = programServiceImpl.fromPage(page, programsList, sortBy);
         response.setPageNumber(pageNumber);
         response.setPageSize(pageSize);
-        response.setTotalElements(resultList.size());
-        response.setTotalPages(resultList.size()/pageSize);
+        response.setTotalElements(programsList.size());
+        response.setTotalPages(programsList.size()/pageSize);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -170,7 +167,6 @@ public class ProgramController {
         }
 
     }
-
 
 
     @ApiOperation(value = "Add exercise to the program")

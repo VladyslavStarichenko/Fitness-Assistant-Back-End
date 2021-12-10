@@ -71,14 +71,22 @@ public class ProgramServiceImpl implements ProgramService {
 
 
     @Override
-    public Page<Program> getPrograms(int pageNumber, int sizeOfPage,String sortBy) {
+    public Page<Program> getProgramsByUser(int pageNumber, int sizeOfPage,String sortBy, String userName) {
         if(sortBy == null){
             sortBy = "name";
         }
         Pageable pageable = PageRequest.of(pageNumber, sizeOfPage, Sort.by(Sort.Order.asc(sortBy)));
-        Page<Program> result = programRepository.findAll(pageable);
+        Page<Program> result = programRepository.findProgramsByUserName(pageable,userName);
         log.info("IN getAllPages: It was found - {} program pages", result.getTotalPages());
         return result;
+    }
+
+    public Page<Program> getAllPrograms(int pageNumber, int sizeOfPage,String sortBy){
+        if(sortBy == null){
+            sortBy = "name";
+        }
+        Pageable pageable = PageRequest.of(pageNumber, sizeOfPage, Sort.by(Sort.Order.asc(sortBy)));
+        return programRepository.findAll(pageable);
     }
 
 

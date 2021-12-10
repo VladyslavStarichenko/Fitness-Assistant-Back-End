@@ -106,7 +106,7 @@ public class UserController {
         }
 
 
-        Page<Program> programs = this.programServiceImpl.getPrograms(pageNumber, pageSize, sortBy);
+        Page<Program> programs = this.programServiceImpl.getProgramsByUser(pageNumber, pageSize, sortBy, loggedInUser.getUserName());
         Page<ProgramGetDto> page = new PageImpl<>(programs
                 .stream()
                 .map(programServiceImpl::fromProgram)
