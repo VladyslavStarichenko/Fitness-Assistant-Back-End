@@ -53,9 +53,7 @@ public class ProgramServiceImpl implements ProgramService {
     }
     public User addProgramToList (Program program, User user){
         Set<Program> programs = user.getPrograms();
-        System.out.println(programs.toString());
         programs.add(program);
-        System.out.println(programs.toString());
         userRepository.save(user);
         log.info("IN updateUser - user's program List with id: {} successfully added", user.getId());
         return user;

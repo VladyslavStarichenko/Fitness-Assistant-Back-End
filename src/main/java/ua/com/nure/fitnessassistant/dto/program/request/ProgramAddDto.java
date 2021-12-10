@@ -7,5 +7,5 @@ public class ProgramAddDto {
 
     public String name;
     public String author;
-    public String description;
+
 }
